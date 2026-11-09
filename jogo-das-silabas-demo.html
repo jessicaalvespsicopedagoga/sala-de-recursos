@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jogo das Sílabas (demo) | Jessica Alves</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--tinta:#2b3a55;--azul:#4f9bd4;--areia:#e7dcc8;--ouro:#f2c14e;--verde:#3e9b6a;--verm:#d9534f;--mesa:#f4f1ea}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--mesa);font-family:Nunito,sans-serif;color:var(--tinta);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.top{width:100%;max-width:760px;display:flex;align-items:center;gap:10px;padding:12px 14px 0}
+.prog{flex:1;display:flex;gap:4px}
+.prog i{flex:1;height:7px;border-radius:4px;background:var(--areia);transition:.3s}
+.prog i.ok{background:var(--verde)}.prog i.cur{background:var(--azul)}
+.ib{border:0;background:#fff;border-radius:10px;width:38px;height:38px;font-size:17px;cursor:pointer;color:var(--tinta)}
+.folha{position:relative;width:calc(100% - 24px);max-width:760px;background:#fff;border-radius:22px;margin:12px;padding:22px 20px 18px;box-shadow:0 6px 24px rgba(43,58,85,.08);flex:1;display:flex;flex-direction:column}
+.tela{display:none;flex:1;flex-direction:column;align-items:center;text-align:center;animation:entra .35s ease}
+.tela.on{display:flex}
+@keyframes entra{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.eye{color:var(--azul);font-weight:700;letter-spacing:.12em;font-size:12px;text-transform:uppercase}
+h1,h2{font-family:Fredoka;font-weight:600;margin:6px 0}
+h1{font-size:clamp(30px,7vw,46px)}h2{font-size:24px}
+.inst{margin:2px 0 10px;font-size:16px}
+.fig{font-size:clamp(92px,22vw,140px);line-height:1.1;margin:6px 0;cursor:pointer;user-select:none}
+.ouvir{border:0;background:#eaf3fb;color:var(--azul);font:600 14px Nunito;border-radius:20px;padding:6px 14px;cursor:pointer}
+.base{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0 6px;padding:14px 16px;border-radius:18px;background:var(--areia)}
+.dado{display:flex;flex-direction:column;align-items:center;gap:4px}
+.dado button.seta{border:0;background:none;font-size:20px;color:var(--azul);cursor:pointer;width:64px;height:30px}
+.face{width:clamp(62px,15vw,84px);height:clamp(62px,15vw,84px);border-radius:14px;background:var(--ouro);display:flex;align-items:center;justify-content:center;font:600 clamp(24px,6vw,32px) Fredoka;box-shadow:inset 0 -5px 0 rgba(0,0,0,.12);transition:transform .25s}
+.face.gira{transform:rotateX(90deg)}
+.face.certo{background:var(--verde);color:#fff}
+.face.dica{outline:3px dashed var(--azul);outline-offset:3px}
+.treme{animation:tr .4s}
+@keyframes tr{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.btn{border:0;background:var(--azul);color:#fff;font:600 18px Fredoka;border-radius:14px;padding:12px 26px;cursor:pointer;margin:6px}
+.btn.sec{background:#fff;color:var(--azul);border:2px solid var(--azul)}
+.btn:disabled{opacity:.4}
+.msg{min-height:26px;font-weight:700;font-size:17px;margin:6px 0}
+.msg.ok{color:var(--verde)}.msg.err{color:var(--verm)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px;width:100%}
+.nav button{border:0;background:none;font-size:34px;color:var(--azul);cursor:pointer;width:48px}
+.nav button:disabled{opacity:.2}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--areia)}
+.dots i.ok{background:var(--verde)}.dots i.cur{background:var(--azul)}
+.rod{font-size:12px;opacity:.7;margin:4px 0 14px}.rod b{color:var(--ouro)}
+input[type=text],input[type=date],textarea{font:inherit;border:2px solid var(--areia);border-radius:10px;padding:8px 10px;width:100%;color:var(--tinta)}
+label.op{display:flex;gap:8px;align-items:center;justify-content:center;margin:6px}
+.rel{text-align:left;width:100%}
+.rel table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+.rel th,.rel td{border-bottom:1px solid var(--areia);padding:5px 4px;text-align:center}
+.rel th:first-child,.rel td:first-child{text-align:left}
+.rel h3{font-family:Fredoka;font-weight:500;margin:14px 0 4px}
+.chk{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:14px}
+.chk label{display:flex;gap:6px;align-items:flex-start}
+#impresso{display:none}
+@media(max-width:480px){.chk{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{
+  body{background:#fff}.top,.nav,.noprint,.btn{display:none!important}
+  .folha{box-shadow:none;margin:0;padding:0}
+  body.pb .folha,body.pb .rod{display:none}
+  body.pb #impresso{display:block}
+  body.pr .tela{display:none!important}body.pr #tRel{display:flex!important}
+}
+#impresso{font-family:Nunito;color:var(--tinta);width:100%}
+.pcab{text-align:center;margin-bottom:8px}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pcard{border:2px solid var(--areia);border-radius:14px;padding:8px;text-align:center;break-inside:avoid}
+.pcard .e{font-size:54px}
+.pcard .cx{display:flex;gap:6px;justify-content:center;margin-top:4px}
+.pcard .cx span{width:46px;height:40px;border:2px dashed var(--azul);border-radius:8px}
+.recorte{page-break-before:always}
+.rgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:0}
+.rgrid span{border:1px dashed #999;height:58px;display:flex;align-items:center;justify-content:center;font:600 22px Fredoka;background:#fdf3d6}
+</style>
+</head>
+<body>
+<div class="top noprint"><div class="prog" id="prog"></div><button class="ib" id="som" title="Som">🔊</button></div>
+
+<div class="folha">
+  <section class="tela on" id="tCapa">
+    <div class="eye">Consciência silábica · 1º ano</div>
+    <h1>Jogo das Sílabas</h1>
+    <div style="background:#fbeec6;border-radius:12px;padding:8px 14px;font-weight:700;font-size:14px;margin:4px 0 8px">DEMONSTRAÇÃO · 3 das 12 palavras do jogo completo</div>
+    <p class="inst">Olhe a figura e gire os dados até formar o nome dela.</p>
+    <div class="fig" style="font-size:90px">🐸 🍿 🛴</div>
+    <div style="max-width:320px;width:100%;margin:10px 0">
+      <input type="text" id="nome" placeholder="Nome da criança">
+    </div>
+    <label class="op"><input type="checkbox" id="optDica" checked> Mostrar botão de dica</label>
+    <label class="op"><input type="checkbox" id="optVoz" checked> Falar a palavra ao tocar na figura</label>
+    <button class="btn" id="comecar">Começar</button>
+    </section>
+  <div id="rodadas"></div>
+  <section class="tela" id="tFim">
+    <div class="eye">Missão cumprida</div>
+    <h1>Você formou todas as palavras!</h1>
+    <div class="fig">⭐</div>
+    <p class="inst" id="fimTxt"></p>
+    <div style="background:#eaf3fb;border-radius:16px;padding:14px 16px;margin:6px 0 10px;max-width:440px">
+      <b style="font-family:Fredoka;font-size:19px">Gostou? O jogo completo tem 12 palavras</b>
+      <p style="margin:6px 0 0;font-size:14px">Palavras de 2, 3 e 4 sílabas, relatório para a terapeuta e folha para imprimir e recortar. Também tem a versão <b>Sílabas Complexas</b>.</p>
+    </div>
+    <a class="btn" href="https://wa.me/5511953746994?text=Oi%2C%20Jessica!%20Testei%20a%20demo%20do%20Jogo%20das%20S%C3%ADlabas%20e%20quero%20o%20jogo%20completo." target="_blank" style="text-decoration:none">Quero o jogo completo</a>
+    <button class="btn sec" onclick="ir(TOT-1)">Ver o relatório da demo</button>
+  </section>
+  <section class="tela" id="tRel">
+    <div class="rel">
+      <div class="eye">Observações para a terapeuta</div>
+      <h2>Jogo das Sílabas – relatório</h2>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div style="flex:2;min-width:180px">Criança: <input type="text" id="rNome"></div>
+        <div style="flex:1;min-width:140px">Data: <input type="date" id="rData"></div>
+      </div>
+      <div id="rResumo" style="margin-top:8px"></div>
+      <table><thead><tr><th>Palavra</th><th>Sílabas</th><th>Tempo</th><th>Tentativas</th><th>Erros</th><th>Dica</th><th>Maior pausa</th></tr></thead><tbody id="rTab"></tbody></table>
+      <h3>Erros (esperado → respondido)</h3>
+      <ul id="rErros" style="margin:4px 0;font-size:14px"></ul>
+      <h3>Observações clínicas</h3>
+      <div class="chk" id="rChk"></div>
+      <h3>Anotações</h3>
+      <textarea id="rNotas" rows="4"></textarea>
+      <div class="noprint" style="text-align:center;margin-top:10px">
+        <button class="btn" id="copiar">Copiar relatório</button>
+        <button class="btn sec" onclick="imprimir('pr')">Imprimir com resultado</button>
+        
+      </div>
+    </div>
+  </section>
+  <div class="nav noprint"><button id="ant">‹</button><div class="dots" id="dots"></div><button id="prox">›</button></div>
+</div>
+<div class="rod"><b>★</b> Jessica Alves · Psicopedagogia e Desenvolvimento · <a href="./" style="color:inherit">voltar à Sala de Recursos</a></div>
+
+<div id="impresso"></div>
+
+<script>
+const PAL=[{e:'🐸',s:['SA','PO']},{e:'🍿',s:['PI','PO','CA']},{e:'🛴',s:['PA','TI','NE','TE']}];
+const DEMO_POOL_EXTRA=['GA','TO','BO','LA','CA','SA','BA','NA','JA','RÉ','RU','LI','TE','LE','FO','A','XI'];
+const NIV={2:'2 sílabas',3:'3 sílabas',4:'4 sílabas'};
+const POOL=[...new Set(PAL.flatMap(p=>p.s).concat(DEMO_POOL_EXTRA,['MA','DE','ME','DA','LU','VA','RI','CO','BE','DI']))];
+const OBS=['Identifica a sílaba inicial','Faz síntese silábica com segurança','Confunde sílabas visualmente parecidas','Troca a ordem das sílabas','Precisa ouvir a palavra para acertar','Autocorrige após o erro','Palavras de 4 sílabas exigem mediação','Mantém atenção até o fim','Demonstra frustração diante do erro','Relaciona som e escrita da sílaba'];
+const TOT=PAL.length+3; // capa + rodadas + fim + rel
+let cur=0,som=true,st=PAL.map(()=>({ini:0,fim:0,tent:0,erros:[],dica:false,ult:0,pausa:0,ok:false}));
+const $=id=>document.getElementById(id);
+const sh=a=>a.sort(()=>Math.random()-.5);
+
+// áudio suave
+let AC;function tom(f,d=.12,t='sine',v=.06){if(!som)return;try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+const sAcerto=()=>{tom(523);setTimeout(()=>tom(659),110);setTimeout(()=>tom(784,.25),220)};
+const sErro=()=>tom(220,.2,'triangle',.05);
+function falar(t){if(!$('optVoz').checked)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.toLowerCase());u.lang='pt-BR';u.rate=.8;speechSynthesis.speak(u)}catch(e){}}
+
+// montar rodadas
+const FRASES=['Muito bem!','Isso mesmo!','Você conseguiu!','Que leitura bonita!','Arrasou!'];
+PAL.forEach((p,i)=>{
+ const sec=document.createElement('section');sec.className='tela';sec.id='t'+(i+1);
+ const faces=p.s.map(sl=>{const o=sh(POOL.filter(x=>x!==sl)).slice(0,3);const f=sh([sl,...o]);if(f[0]===sl)f.push(f.shift());return f});
+ sec.innerHTML=`<div class="eye">${NIV[p.s.length]} · ${i+1} de ${PAL.length}</div>
+ <h2>Que figura é essa?</h2><p class="inst">Gire os dados e forme o nome.</p>
+ <div class="fig" title="Ouvir">${p.e}</div><button class="ouvir">🔈 ouvir</button>
+ <div class="base">${p.s.map((_,k)=>`<div class="dado"><button class="seta" data-d="-1">▲</button><div class="face" data-k="${k}" data-i="0">${faces[k][0]}</div><button class="seta" data-d="1">▼</button></div>`).join('')}</div>
+ <div class="msg"></div>
+ <div><button class="btn conf">Conferir</button><button class="btn sec dicab">Dica</button></div>`;
+ $('rodadas').appendChild(sec);
+ const msg=sec.querySelector('.msg');
+ const marca=()=>{const s=st[i],n=Date.now();if(s.ult)s.pausa=Math.max(s.pausa,n-s.ult);s.ult=n};
+ const fala=()=>{falar(p.s.join(''));marca()};
+ sec.querySelector('.fig').onclick=fala;sec.querySelector('.ouvir').onclick=()=>{falar(p.s.join(''));marca()};
+ sec.querySelectorAll('.dado').forEach((d,k)=>d.querySelectorAll('.seta').forEach(b=>b.onclick=()=>{
+   if(st[i].ok)return;marca();const f=d.querySelector('.face');let x=(+f.dataset.i+ +b.dataset.d+4)%4;
+   f.classList.add('gira');tom(440,.06,'sine',.04);
+   setTimeout(()=>{f.dataset.i=x;f.textContent=faces[k][x];f.classList.remove('gira')},130);msg.textContent='';msg.className='msg'}));
+ sec.querySelector('.conf').onclick=()=>{
+   const s=st[i];if(s.ok)return;marca();s.tent++;
+   const fs=[...sec.querySelectorAll('.face')],resp=fs.map(f=>f.textContent);
+   if(resp.join()===p.s.join()){s.ok=true;s.fim=Date.now();fs.forEach(f=>f.classList.add('certo'));
+     msg.textContent=FRASES[i%FRASES.length]+' '+p.s.join('-');msg.className='msg ok';sAcerto();falar(p.s.join(''));desenhaNav()}
+   else{s.erros.push(resp.join('-'));msg.textContent='Quase! Tente de novo.';msg.className='msg err';sErro();
+     fs.forEach((f,k)=>{if(f.textContent!==p.s[k]){f.parentNode.classList.remove('treme');void f.offsetWidth;f.parentNode.classList.add('treme')}})}
+ };
+ sec.querySelector('.dicab').onclick=()=>{const s=st[i];if(s.ok)return;marca();s.dica=true;
+   const fs=[...sec.querySelectorAll('.face')];const k=fs.findIndex((f,j)=>f.textContent!==p.s[j]);
+   if(k<0){msg.textContent='Está certinho, é só conferir!';return}
+   const f=fs[k];f.dataset.i=faces[k].indexOf(p.s[k]);f.textContent=p.s[k];f.classList.add('dica');tom(660,.15);
+   msg.textContent='Olha a dica no dado destacado.';msg.className='msg'};
+});
+const telas=[...document.querySelectorAll('.tela')];
+
+function desenhaNav(){
+ $('prog').innerHTML=PAL.map((_,i)=>`<i class="${st[i].ok?'ok':(cur===i+1?'cur':'')}"></i>`).join('');
+ $('dots').innerHTML=telas.map((_,i)=>`<i class="${i===cur?'cur':(i>0&&i<=PAL.length&&st[i-1].ok?'ok':'')}"></i>`).join('');
+ $('ant').disabled=cur===0;$('prox').disabled=cur===TOT-1;
+}
+function ir(n){if(n<0||n>=TOT)return;telas[cur].classList.remove('on');cur=n;telas[cur].classList.add('on');
+ tom(330,.05,'sine',.03);
+ if(cur>=1&&cur<=PAL.length){const s=st[cur-1];if(!s.ini){s.ini=Date.now();s.ult=s.ini}
+   telas[cur].querySelector('.dicab').style.display=$('optDica').checked?'':'none'}
+ if(cur===TOT-2){const ok=st.filter(s=>s.ok).length;$('fimTxt').textContent=`Você formou ${ok} de ${PAL.length} palavras.`;tom(523);setTimeout(()=>tom(784,.4),150)}
+ if(cur===TOT-1)relatorio();desenhaNav();window.scrollTo(0,0)}
+$('ant').onclick=()=>ir(cur-1);$('prox').onclick=()=>ir(cur+1);
+$('comecar').onclick=()=>ir(1);
+$('som').onclick=()=>{som=!som;$('som').textContent=som?'🔊':'🔇'};
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;if(e.key==='ArrowRight')ir(cur+1);if(e.key==='ArrowLeft')ir(cur-1)});
+let tx=0;document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{if(e.target.closest('.base,textarea,input'))return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>70)ir(cur+(d<0?1:-1))});
+
+// relatório
+const seg=ms=>ms?Math.round(ms/1000)+'s':'–';
+$('rChk').innerHTML=OBS.map(o=>`<label><input type="checkbox" value="${o}">${o}</label>`).join('');
+function relatorio(){
+ if(!$('rNome').value)$('rNome').value=$('nome').value;
+ if(!$('rData').value)$('rData').value=new Date().toISOString().slice(0,10);
+ $('rTab').innerHTML=PAL.map((p,i)=>{const s=st[i];return `<tr><td>${p.s.join('-')}${s.ok?'':' (não concluída)'}</td><td>${p.s.length}</td><td>${s.ini&&s.fim?seg(s.fim-s.ini):'–'}</td><td>${s.tent}</td><td>${s.erros.length}</td><td>${s.dica?'sim':'não'}</td><td>${seg(s.pausa)}</td></tr>`}).join('');
+ const er=PAL.flatMap((p,i)=>st[i].erros.map(r=>`${p.s.join('-')} → ${r}`));
+ $('rErros').innerHTML=er.length?er.map(x=>`<li>${x}</li>`).join(''):'<li>Nenhum erro registrado.</li>';
+ const res=[2,3,4].map(n=>{const ix=PAL.map((p,i)=>i).filter(i=>PAL[i].s.length===n);const ac=ix.filter(i=>st[i].ok&&st[i].erros.length===0).length;return `${n} sílabas: ${ac}/${ix.length} de primeira`});
+ $('rResumo').innerHTML=`<b>Concluídas:</b> ${st.filter(s=>s.ok).length}/${PAL.length} · <b>Dicas:</b> ${st.filter(s=>s.dica).length} · ${res.join(' · ')}`;
+}
+$('copiar').onclick=()=>{relatorio();
+ let t=`JOGO DAS SÍLABAS – Relatório\nCriança: ${$('rNome').value}\nData: ${$('rData').value.split('-').reverse().join('/')}\n${$('rResumo').innerText}\n\n`;
+ t+=PAL.map((p,i)=>{const s=st[i];return `${p.s.join('-')}: ${s.ok?'concluída':'não concluída'}, tempo ${s.ini&&s.fim?seg(s.fim-s.ini):'–'}, tentativas ${s.tent}, erros ${s.erros.length}, dica ${s.dica?'sim':'não'}, maior pausa ${seg(s.pausa)}`}).join('\n');
+ t+='\n\nErros (esperado → respondido):\n'+$('rErros').innerText;
+ const ob=[...$('rChk').querySelectorAll('input:checked')].map(c=>'- '+c.value);
+ t+='\n\nObservações:\n'+(ob.join('\n')||'-')+'\n\nAnotações:\n'+($('rNotas').value||'-');
+ const ok=()=>{$('copiar').textContent='Copiado!';setTimeout(()=>$('copiar').textContent='Copiar relatório',1800)};
+ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(ok).catch(()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();ok()});
+};
+
+// folha impressa
+(function(){
+ const sil=sh(PAL.flatMap(p=>p.s).concat(['MA','DE','ME','DA','LU','VA','RI','CO']));
+ $('impresso').innerHTML=`<div class="pcab"><div class="eye">Consciência silábica · 1º ano</div><h2 style="font-family:Fredoka">Jogo das Sílabas</h2>
+ <div style="font-size:14px">Nome: ____________________________ Data: ___/___/____</div>
+ <p style="font-size:14px;margin:6px 0">Recorte as sílabas da última página e cole nos quadrinhos para formar o nome de cada figura (ou escreva).</p></div>
+ <div class="pgrid">${PAL.map(p=>`<div class="pcard"><div class="e">${p.e}</div><div class="cx">${p.s.map(()=>'<span></span>').join('')}</div></div>`).join('')}</div>
+ <div class="rod" style="text-align:center;margin-top:8px"><b style="color:#f2c14e">★</b> Jessica Alves · Psicopedagogia e Desenvolvimento</div>
+ <div class="recorte"><div class="pcab"><div class="eye">Recorte</div><h2 style="font-family:Fredoka">Sílabas para recortar</h2><p style="font-size:13px">Tem algumas sílabas a mais para desafiar!</p></div>
+ <div class="rgrid">${sil.map(s=>`<span>${s}</span>`).join('')}</div></div>`;
+})();
+function imprimir(m){if(m==='pr')relatorio();document.body.classList.remove('pb','pr');document.body.classList.add(m);setTimeout(()=>{window.print();document.body.classList.remove(m)},60)}
+desenhaNav();
+</script>
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea">
+<title>Pomodoro da Sessão · Jessica Alves</title>
+<meta name="description" content="Pomodoro para sessões de 50 minutos, com pausas e uma plantinha que cresce até florescer. Recurso gratuito de Jessica Alves, psicopedagoga.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mesa:#f4f1ea; --folha:#ffffff;
+    --tinta:#2b3a55; --suave:#56647b;
+    --azul:#4f9bd4; --azul-txt:#2a6a9e; --azul-claro:#dbeaf6;
+    --areia:#e7dcc8;
+    --ouro:#f2c14e; --ouro-claro:#fbeec6;
+    --verde:#3e9b6a; --verde-claro:#d7ecdf;
+    --linha:#ece4d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--mesa)}
+  body{font-family:'Nunito',system-ui,sans-serif;color:var(--tinta);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+  button{font-family:inherit;color:inherit;cursor:pointer}
+  h1,h2{font-family:'Fredoka',system-ui,sans-serif;font-weight:600}
+
+  /* Papel rasgado */
+  .rs{display:inline-block;line-height:1.05}
+  .r1{clip-path:polygon(0% 7%,4% 1%,9% 6%,15% 0%,22% 5%,30% 1%,38% 6%,46% 0%,55% 5%,63% 1%,72% 6%,80% 0%,88% 5%,95% 1%,100% 6%,98.5% 50%,100% 94%,95% 100%,88% 95%,80% 100%,71% 94%,62% 99%,54% 95%,45% 100%,37% 94%,28% 99%,20% 95%,12% 100%,5% 94%,0% 99%,1.5% 50%)}
+  .r2{clip-path:polygon(0% 3%,6% 7%,12% 1%,19% 6%,27% 0%,34% 5%,43% 1%,51% 7%,59% 2%,68% 6%,76% 0%,84% 5%,92% 1%,100% 4%,99% 48%,100% 97%,93% 93%,85% 99%,77% 94%,68% 100%,60% 95%,51% 99%,42% 94%,33% 100%,25% 95%,16% 99%,8% 94%,0% 98%,1% 52%)}
+
+  /* Telas */
+  main{flex:1;width:100%;padding:16px 16px 8px}
+  .tela{display:none;max-width:560px;margin:0 auto;background:var(--folha);border-radius:26px;padding:24px 20px 22px;box-shadow:0 10px 36px rgba(43,58,85,.06);animation:entra .35s ease}
+  .tela.ativa{display:block}
+  #t-sessao{max-width:980px}
+  @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* Cabeçalho da tela 1 */
+  header{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px}
+  .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--azul-txt);text-transform:uppercase}
+  .titulo{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .titulo span{font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(30px,8.5vw,40px);padding:8px 22px 12px}
+  .t1{background:var(--azul-claro);transform:rotate(-1.5deg)}
+  .t2{background:var(--ouro-claro);transform:rotate(1.2deg)}
+  .instr{color:var(--suave);font-size:16px;line-height:1.5;max-width:440px}
+
+  /* Roteiros */
+  .passo{font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;margin:4px 0 10px}
+  .roteiros{display:flex;flex-direction:column;gap:10px}
+  .rot{border:none;background:var(--mesa);padding:12px 18px 15px;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left;transition:transform .2s, background .2s}
+  .rot b{display:block;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px}
+  .rot small{display:block;font-size:13px;color:var(--suave);margin-top:2px}
+  .rot .mini{display:flex;gap:3px;width:42%;max-width:180px;flex-shrink:0}
+  .rot .mini i{height:12px;border-radius:3px;display:block}
+  .mini .foco{background:var(--azul)} .mini .pausa{background:var(--ouro)} .mini .fech{background:var(--verde)}
+  .rot.on{background:var(--areia);transform:rotate(-.8deg) scale(1.02)}
+  .rot:focus-visible{background:var(--azul-claro)}
+  .legenda{display:flex;gap:14px;justify-content:center;font-size:13px;color:var(--suave);margin:12px 0 6px;flex-wrap:wrap}
+  .legenda span{display:inline-flex;align-items:center;gap:6px}
+  .legenda i{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+  details.ajuste{border:2px solid var(--linha);border-radius:18px;padding:14px 16px;margin-top:14px}
+  details.ajuste summary{cursor:pointer;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:28px}
+  details.ajuste summary::-webkit-details-marker{display:none}
+  details.ajuste summary::after{content:"+";font-size:22px;color:var(--suave)}
+  details[open].ajuste summary::after{content:"–"}
+  .ajustes{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:12px}
+  .ajustes label{font-size:12px;font-weight:700;color:var(--suave);display:flex;flex-direction:column;gap:4px}
+  .total{font-size:14px;color:var(--suave);margin-top:10px}
+  .opt{display:flex;align-items:center;gap:10px;font-size:15px;margin-top:12px}
+  .opt input{width:20px;height:20px;accent-color:var(--azul)}
+  .aviso{font-size:13px;color:var(--suave);text-align:center;margin-top:10px;min-height:18px}
+
+  input[type=text],input[type=number],textarea{font:inherit;font-size:16px;color:var(--tinta);border:2px solid var(--linha);border-radius:12px;padding:10px 12px;background:#fff;width:100%}
+  input:focus,textarea:focus{outline:none;border-color:var(--azul)}
+  textarea{min-height:80px;resize:vertical}
+
+  .btn{border:none;border-radius:999px;min-height:52px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;transition:transform .15s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .btn:active{transform:scale(.96)}
+  .principal{background:var(--tinta);color:#fff;padding:0 30px;white-space:nowrap}
+  .sec{background:var(--mesa);min-width:52px;padding:0 14px;font-size:15px}
+  .btn:focus-visible,.voltar:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+  .largo{width:100%;margin-top:18px}
+
+  /* Barra do topo (telas 2 e 3) */
+  .topo{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+  .voltar{border:none;background:var(--mesa);border-radius:999px;min-height:44px;padding:0 14px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:4px}
+  .topo-tit{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;text-align:center;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* Sessão */
+  .palco{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+  .viva{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center}
+  .planta{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .planta > svg{width:100%;max-width:230px;height:auto;overflow:visible}
+  .estagio{font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:var(--verde);text-align:center}
+
+  .etapas{display:flex;flex-direction:column;gap:6px;list-style:none}
+  .etapa{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 12px 10px;font-weight:700;font-size:14px;transition:transform .3s, opacity .3s}
+  .etapa.foco{background:var(--azul-claro)} .etapa.pausa{background:var(--ouro-claro)} .etapa.fech{background:var(--verde-claro)}
+  .etapa .min{font-weight:600;color:var(--suave);white-space:nowrap}
+  .etapa.feito{opacity:.5}
+  .etapa.feito .min::before{content:"✓ ";color:var(--verde)}
+  .etapa.agora{transform:scale(1.05) rotate(-1deg);font-size:15px;padding:10px 12px 13px}
+  .etapa.agora .min{color:var(--tinta)}
+  .etapa .tag{font-size:11px;font-weight:800;background:var(--tinta);color:#fff;border-radius:99px;padding:2px 8px 3px;margin-left:4px}
+
+  .relogio{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .modo{font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;padding:6px 20px 10px;background:var(--azul-claro)}
+  body.m-pausa .modo{background:var(--ouro-claro)} body.m-fech .modo{background:var(--verde-claro)}
+  .tempo{font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(60px,17vw,88px);line-height:1;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+  .barra{width:100%;max-width:320px;height:8px;background:var(--mesa);border-radius:99px;overflow:hidden}
+  .barra i{display:block;height:100%;width:0;background:var(--azul);border-radius:99px;transition:width .4s}
+  body.m-pausa .barra i{background:var(--ouro)} body.m-fech .barra i{background:var(--verde)}
+  .info{font-size:14px;color:var(--suave);text-align:center}
+  .botoes{display:flex;gap:10px;justify-content:center;margin-top:4px}
+  .msg{font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:var(--azul-txt);text-align:center;min-height:22px}
+
+  .cartao{border:2px solid var(--linha);border-radius:20px;padding:16px 18px}
+  .cartao h2{font-size:17px;display:inline-block;padding:4px 14px 8px;margin-bottom:10px}
+  .h-azul{background:var(--azul-claro)} .h-ouro{background:var(--ouro-claro)} .h-verde{background:var(--verde-claro)} .h-areia{background:var(--areia)}
+  .contexto p{font-size:15px;line-height:1.5}
+  .contexto .grande{font-family:'Fredoka',sans-serif;font-weight:500;font-size:20px;line-height:1.3;margin-bottom:4px}
+  label.campo{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700;color:var(--suave)}
+  .link-btn{background:none;border:none;color:var(--azul-txt);font-weight:700;font-size:14px;margin-top:6px;padding:8px 0;text-decoration:underline;text-underline-offset:3px}
+
+  /* Registro */
+  .blocos{display:flex;flex-direction:column;gap:10px;margin:6px 0 16px}
+  .bloco{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center}
+  .bloco .n{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;background:var(--azul-claro);padding:6px 10px 8px;white-space:nowrap}
+  .bloco label.ok{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--suave);min-height:44px}
+  .bloco .ok input{width:20px;height:20px;accent-color:var(--verde)}
+  .sub{font-weight:800;font-size:14px;color:var(--suave);margin:4px 0 8px}
+  .obs{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+  .obs label{display:flex;align-items:flex-start;gap:10px;font-size:15px;line-height:1.35}
+  .obs input{width:20px;height:20px;flex-shrink:0;accent-color:var(--azul);margin-top:1px}
+  .acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .acoes .btn{font-size:16px;min-height:48px;padding:0 22px}
+  .feito-msg{font-size:14px;color:var(--verde);font-weight:700;min-height:20px;margin-top:8px}
+
+  /* Rodapé discreto */
+  footer{width:100%;padding:8px 16px 20px}
+  .rodape{max-width:560px;margin:0 auto;border:1.5px solid var(--linha);border-radius:14px;padding:10px 14px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 12px;font-size:12px;color:var(--suave);text-align:center;background:var(--folha)}
+  .rodape b{color:var(--tinta);display:inline-flex;align-items:center;gap:5px}
+  .rodape a{color:var(--suave);text-decoration:none;padding:4px 0}
+  .rodape a:hover{color:var(--azul-txt)}
+
+  /* Planta */
+  .folhaP{transform:scale(0);transition:transform 1.1s cubic-bezier(.3,1.4,.5,1)}
+  .folhaP.on{transform:scale(1)}
+  #botao,#flor{transform:scale(0);transition:transform 1.2s cubic-bezier(.3,1.4,.5,1)}
+  #botao.on,#flor.on{transform:scale(1)}
+  #broto{transform:scale(0);transition:transform .8s ease}
+  #broto.on{transform:scale(1)}
+  #brilhos{opacity:0;transition:opacity 1s}
+  #brilhos.on{opacity:1}
+  #gotas{opacity:0;transition:opacity .6s}
+  body.regando #gotas{opacity:1}
+  .gota{animation:cair 1.8s ease-in infinite}
+  .gota:nth-child(2){animation-delay:.6s} .gota:nth-child(3){animation-delay:1.2s}
+  @keyframes cair{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(70px);opacity:0}}
+  #corpo{transform-origin:120px 236px}
+  body.regando #corpo{animation:balanco 4s ease-in-out infinite}
+  @keyframes balanco{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg)}}
+
+  @media (min-width:820px){
+    main{padding:28px 24px 8px}
+    .tela{padding:30px 32px 26px}
+    .palco{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:start}
+    .planta > svg{max-width:280px}
+    .lado{display:flex;flex-direction:column;gap:14px}
+  }
+  @media (max-width:819px){ .lado{display:flex;flex-direction:column;gap:12px} }
+  @media (max-width:360px){
+    main{padding:10px 10px 6px}
+    .tela{padding:18px 14px}
+    .etapa{font-size:13px;padding:6px 9px 9px}
+    .etapa .tag{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;animation:none!important}
+  }
+  @media print{
+    html,body{background:#fff}
+    main{padding:0}
+    .tela{display:none!important;box-shadow:none}
+    #t-registro{display:block!important;padding:0}
+    .topo,.acoes,.feito-msg{display:none!important}
+  }
+</style>
+</head>
+<body>
+<noscript>
+  <div style="max-width:560px;margin:16px auto 0;padding:16px 18px;background:#fbeec6;border-radius:16px;font-family:'Nunito',sans-serif;color:#2b3a55;font-size:16px;line-height:1.5;text-align:center">
+    <b>Os botões não funcionam neste modo de visualização.</b><br>
+    Baixe o arquivo e abra pelo <b>Chrome</b>: toque no arquivo, escolha "Abrir com" e selecione o Chrome.
+  </div>
+</noscript>
+<main>
+
+  <!-- TELA 1 · ESCOLHER O ROTEIRO -->
+  <section class="tela ativa" id="t-inicio" aria-label="Escolher o roteiro">
+    <header>
+      <p class="eyebrow">Pomodoro · versão para sessão</p>
+      <h1 class="titulo"><span class="rs r1 t1">Sessão de estudos</span><span class="rs r2 t2">com pausas</span></h1>
+      <p class="instr">50 minutos divididos em blocos de foco e pausas. Enquanto vocês estudam, uma plantinha cresce até florescer.</p>
+    </header>
+
+    <p class="passo">Escolha o roteiro</p>
+    <div class="roteiros" id="roteiros"></div>
+    <div class="legenda" aria-hidden="true">
+      <span><i style="background:var(--azul)"></i>foco</span>
+      <span><i style="background:var(--ouro)"></i>pausa</span>
+      <span><i style="background:var(--verde)"></i>fechamento</span>
+    </div>
+
+    <details class="ajuste">
+      <summary>Ajustar tempos</summary>
+      <div class="ajustes" id="ajustes"></div>
+      <p class="total" id="total"></p>
+      <label class="opt"><input type="checkbox" id="auto" checked> Seguir sozinho para a próxima etapa</label>
+      <label class="opt"><input type="checkbox" id="som" checked> Som suave ao fim de cada etapa</label>
+    </details>
+
+    <button class="btn principal largo" id="comecar">Começar sessão</button>
+    <p class="aviso" id="aviso"></p>
+  </section>
+
+  <!-- TELA 2 · SESSÃO -->
+  <section class="tela" id="t-sessao" aria-label="Sessão">
+    <div class="topo">
+      <button class="voltar" data-ir="inicio" aria-label="Voltar para os roteiros"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Roteiro</button>
+      <span class="topo-tit" id="topoRot">Equilibrado · 50 min</span>
+      <button class="voltar" data-ir="registro">Registro<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+
+    <div class="palco">
+      <div class="viva">
+        <div class="planta">
+          <svg viewBox="34 22 172 272" role="img" aria-label="Plantinha que cresce conforme a sessão avança">
+            <g id="gotas" aria-hidden="true">
+              <path class="gota" d="M92 120c0 0-5 7-5 10a5 5 0 0 0 10 0c0-3-5-10-5-10z" fill="#9cc6e8"/>
+              <path class="gota" d="M150 104c0 0-5 7-5 10a5 5 0 0 0 10 0c0-3-5-10-5-10z" fill="#9cc6e8"/>
+              <path class="gota" d="M120 92c0 0-5 7-5 10a5 5 0 0 0 10 0c0-3-5-10-5-10z" fill="#9cc6e8"/>
+            </g>
+            <g id="corpo">
+              <path id="caule" d="M120 236 C 117 205, 127 178, 120 150 S 113 102, 120 68" fill="none" stroke="#3e9b6a" stroke-width="5" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+              <g transform="translate(120 228)"><g id="broto"><path d="M0 0 C -2 -8, -10 -14, -16 -12 C -12 -6, -6 -2, 0 0Z M0 0 C 2 -9, 9 -15, 15 -13 C 11 -7, 5 -2, 0 0Z" fill="#8fc7a0"/></g></g>
+              <g transform="translate(121 206) rotate(-28)"><g class="folhaP"><path d="M0 0 C 10 -15, 32 -17, 46 -4 C 32 7, 12 9, 0 0Z" fill="#8fc7a0"/><path d="M3 -1 C 16 -5, 28 -6, 41 -4" fill="none" stroke="#3e9b6a" stroke-width="1.6" stroke-linecap="round"/></g></g>
+              <g transform="translate(119 184) rotate(208) scale(1 -1)"><g class="folhaP"><path d="M0 0 C 10 -15, 32 -17, 46 -4 C 32 7, 12 9, 0 0Z" fill="#a9d4b5"/><path d="M3 -1 C 16 -5, 28 -6, 41 -4" fill="none" stroke="#3e9b6a" stroke-width="1.6" stroke-linecap="round"/></g></g>
+              <g transform="translate(122 160) rotate(-34)"><g class="folhaP"><path d="M0 0 C 10 -15, 32 -17, 46 -4 C 32 7, 12 9, 0 0Z" fill="#a9d4b5"/><path d="M3 -1 C 16 -5, 28 -6, 41 -4" fill="none" stroke="#3e9b6a" stroke-width="1.6" stroke-linecap="round"/></g></g>
+              <g transform="translate(117 130) rotate(212) scale(1 -1)"><g class="folhaP"><path d="M0 0 C 9 -13, 28 -15, 40 -4 C 28 6, 10 8, 0 0Z" fill="#8fc7a0"/><path d="M3 -1 C 14 -5, 25 -6, 36 -4" fill="none" stroke="#3e9b6a" stroke-width="1.6" stroke-linecap="round"/></g></g>
+              <g transform="translate(119 108) rotate(-30)"><g class="folhaP"><path d="M0 0 C 8 -11, 24 -13, 34 -3 C 24 5, 9 7, 0 0Z" fill="#a9d4b5"/><path d="M3 -1 C 12 -4, 21 -5, 30 -3" fill="none" stroke="#3e9b6a" stroke-width="1.5" stroke-linecap="round"/></g></g>
+              <g transform="translate(120 66)">
+                <g id="botao"><ellipse cx="0" cy="-6" rx="8" ry="12" fill="#8fc7a0"/><path d="M-6 -2 C -3 -12, 3 -12, 6 -2" fill="none" stroke="#3e9b6a" stroke-width="1.5"/></g>
+                <g id="flor">
+                  <g fill="#fbeec6" stroke="#e3ad2f" stroke-width="1.6">
+                    <ellipse cx="0" cy="-17" rx="9" ry="16"/>
+                    <ellipse cx="0" cy="-17" rx="9" ry="16" transform="rotate(60)"/>
+                    <ellipse cx="0" cy="-17" rx="9" ry="16" transform="rotate(120)"/>
+                    <ellipse cx="0" cy="-17" rx="9" ry="16" transform="rotate(180)"/>
+                    <ellipse cx="0" cy="-17" rx="9" ry="16" transform="rotate(240)"/>
+                    <ellipse cx="0" cy="-17" rx="9" ry="16" transform="rotate(300)"/>
+                  </g>
+                  <circle r="10" fill="#f2c14e"/>
+                  <circle r="10" fill="none" stroke="#e3ad2f" stroke-width="1.6"/>
+                </g>
+              </g>
+            </g>
+            <g id="brilhos" fill="#f2c14e" aria-hidden="true">
+              <path d="M60 60l2.4 5.4 5.8.5-4.4 3.9 1.3 5.7L60 72.5l-5.1 3 1.3-5.7-4.4-3.9 5.8-.5z"/>
+              <path d="M184 40l2 4.5 4.8.4-3.6 3.2 1.1 4.7-4.3-2.5-4.3 2.5 1.1-4.7-3.6-3.2 4.8-.4z"/>
+              <path d="M190 120l1.6 3.6 3.9.3-2.9 2.6.9 3.8-3.5-2-3.5 2 .9-3.8-2.9-2.6 3.9-.3z"/>
+            </g>
+            <path d="M76 236 h88 l-10 56 h-68 z" fill="#e7dcc8"/>
+            <path d="M70 226 h100 v14 h-100 z" fill="#cdb894"/>
+            <ellipse cx="120" cy="227" rx="47" ry="5" fill="#8a6a4f"/>
+            <path d="M70 226 h100 v14 h-100 z" fill="none" stroke="#b9a179" stroke-width="1.5"/>
+          </svg>
+          <p class="estagio" id="estagio">semente plantada</p>
+        </div>
+        <ol class="etapas" id="etapas" aria-label="Etapas da sessão"></ol>
+      </div>
+
+      <div class="lado">
+        <div class="relogio">
+          <span class="modo rs r1" id="modo">Foco</span>
+          <div class="tempo" id="tempo">20:00</div>
+          <div class="barra" aria-hidden="true"><i id="barra"></i></div>
+          <p class="info" id="info"></p>
+          <div class="botoes">
+            <button class="btn sec" id="reiniciar" aria-label="Reiniciar sessão" title="Reiniciar sessão"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+            <button class="btn principal" id="iniciar">Iniciar</button>
+            <button class="btn sec" id="pular" aria-label="Pular para a próxima etapa" title="Pular etapa"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l9 7-9 7z"/><path d="M19 5v14"/></svg></button>
+            <button class="btn sec" id="tela" aria-label="Tela cheia" title="Tela cheia"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+          </div>
+        </div>
+        <p class="msg" id="msg" aria-live="polite"></p>
+        <div class="cartao contexto" id="contexto"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA 3 · REGISTRO -->
+  <section class="tela" id="t-registro" aria-label="Registro para o terapeuta">
+    <div class="topo">
+      <button class="voltar" data-ir="sessao"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Sessão</button>
+      <span class="topo-tit">Para o terapeuta</span>
+      <span style="width:44px"></span>
+    </div>
+    <h2 class="rs r2 h-areia" style="font-size:20px;padding:6px 16px 10px;margin-bottom:14px">Registro da sessão</h2>
+    <label class="campo">Estudante<input type="text" id="aluno" placeholder="Nome ou iniciais"></label>
+    <p class="info" style="text-align:left;margin:12px 0 4px" id="dataSessao"></p>
+    <div class="blocos" id="blocos"></div>
+    <p class="sub">Observações</p>
+    <div class="obs" id="obs"></div>
+    <label class="campo">Anotações<textarea id="notas" placeholder="Como foi a sessão, combinados para casa..."></textarea></label>
+    <div class="acoes">
+      <button class="btn principal" id="copiar">Copiar resumo</button>
+      <button class="btn sec" id="imprimir">Imprimir</button>
+    </div>
+    <p class="feito-msg" id="feito" aria-live="polite"></p>
+  </section>
+</main>
+
+<footer>
+  <div class="rodape">
+    <b><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="#f2c14e"><path d="M12 2.5l2.7 6.1 6.6.6-5 4.4 1.5 6.5L12 16.7l-5.8 3.4 1.5-6.5-5-4.4 6.6-.6z"/></svg>Jessica Alves · Psicopedagogia e Desenvolvimento</b>
+    <a href="https://psicopedagodesenvolve.com.br" target="_blank" rel="noopener">psicopedagodesenvolve.com.br</a>
+    <a href="https://wa.me/5511953746994" target="_blank" rel="noopener">(11) 95374-6994</a>
+    <a href="mailto:psicopedagogajessicaalves@gmail.com">psicopedagogajessicaalves@gmail.com</a>
+    <a href="https://whatsapp.com/channel/0029Vb9X0xM7Noa8l6cnl22J" target="_blank" rel="noopener">Canal Sala de Recursos</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+
+  var ROTEIROS = {
+    equilibrado: { nome:'Equilibrado', desc:'2 blocos de 20 min', segs:[['foco',20],['pausa',5],['foco',20],['fech',5]] },
+    curtos:      { nome:'Blocos curtos', desc:'3 blocos de 12 min · bom para quem cansa rápido', segs:[['foco',12],['pausa',3],['foco',12],['pausa',3],['foco',12],['fech',8]] },
+    longo:       { nome:'Foco maior', desc:'1 bloco de 25 + 1 de 15 min', segs:[['foco',25],['pausa',5],['foco',15],['fech',5]] }
+  };
+  var NOMES = { foco:'Foco', pausa:'Pausa', fech:'Fechamento' };
+  var PAUSAS = [
+    'Levante, espreguice e alongue os braços para cima.',
+    'Beba um copo de água.',
+    'Olhe pela janela e descanse os olhos lá longe.',
+    'Respire fundo 3 vezes, bem devagar: inspira em 4, solta em 6.',
+    'Gire os ombros para trás 5 vezes e solte o pescoço.',
+    'Ande um pouquinho pela casa ou pela sala.',
+    'Celular de lado: o cérebro descansa melhor sem tela.'
+  ];
+  var FOCO_MSGS = ['Um bloco de cada vez.','Uma tarefa só, atenção inteira nela.','Se distraiu? Tudo bem, volta para a tarefa.','A plantinha está crescendo com você.'];
+  var OBS = [
+    'Manteve o foco sem precisar de lembretes',
+    'Precisou de redirecionamento durante o foco',
+    'Voltou bem das pausas',
+    'Concluiu o que planejou para os blocos',
+    'Demonstrou cansaço ou frustração',
+    'Conseguiu planejar sozinho o que estudar'
+  ];
+
+  var rotKey = 'equilibrado';
+  try { var s = localStorage.getItem('pomoSessaoRot'); if (s && ROTEIROS[s]) rotKey = s; } catch(e){}
+  var segs, idx, restante, rodando=false, fimEm=0, timer=null, terminou=false, tarefas, feitos, pausaIdx=0, wake=null;
+
+  function totalSeg(){ return segs.reduce(function(a,s){ return a + s.min*60; }, 0); }
+  function totalMin(){ return Math.round(totalSeg()/60); }
+  function decorrido(){
+    var t = 0; for (var i=0;i<idx;i++) t += segs[i].min*60;
+    return t + (segs[idx].min*60 - restante);
+  }
+  function comecou(){ return terminou || decorrido() > 0 || rodando; }
+  function fmt(s){ s = Math.max(0, Math.ceil(s)); return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
+  function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function sorteia(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function numBloco(i){ var n=0; for (var k=0;k<=i;k++) if (segs[k].tipo==='foco') n++; return n; }
+
+  /* ---------- telas ---------- */
+  function ir(nome){
+    document.querySelectorAll('.tela').forEach(function(t){ t.classList.toggle('ativa', t.id === 't-' + nome); });
+    if (nome === 'inicio') atualizarInicio();
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('[data-ir]').forEach(function(b){ b.onclick = function(){ ir(b.dataset.ir); }; });
+
+  /* ---------- sessão ---------- */
+  function carregar(){
+    segs = ROTEIROS[rotKey].segs.map(function(x){ return { tipo:x[0], min:x[1] }; });
+    novaSessao();
+  }
+  function novaSessao(){
+    parar();
+    idx = 0; restante = segs[0].min*60; terminou = false;
+    tarefas = {}; feitos = {};
+    $('msg').textContent = 'Escreva o que vai estudar e aperte Iniciar.';
+    montarRoteiros(); montarAjustes(); montarBlocos(); montarContexto(); render(); atualizarInicio();
+  }
+
+  function montarRoteiros(){
+    var box = $('roteiros'); box.innerHTML = '';
+    Object.keys(ROTEIROS).forEach(function(k, i){
+      var r = ROTEIROS[k], b = document.createElement('button');
+      var lista = k === rotKey ? segs : r.segs.map(function(x){ return { tipo:x[0], min:x[1] }; });
+      b.className = 'rot ' + (i%2 ? 'r2' : 'r1') + (k===rotKey ? ' on' : '');
+      b.setAttribute('aria-pressed', k===rotKey);
+      var mini = lista.map(function(x){ return '<i class="' + x.tipo + '" style="flex:' + x.min + '"></i>'; }).join('');
+      b.innerHTML = '<span><b>' + r.nome + '</b><small>' + r.desc + '</small></span><span class="mini" aria-hidden="true">' + mini + '</span>';
+      b.onclick = function(){
+        if (k === rotKey) return;
+        rotKey = k; try{ localStorage.setItem('pomoSessaoRot', k); }catch(e){}
+        carregar();
+      };
+      box.appendChild(b);
+    });
+  }
+  function montarAjustes(){
+    var box = $('ajustes'); box.innerHTML = '';
+    var nFoco = 0;
+    segs.forEach(function(s, i){
+      var nome = s.tipo==='foco' ? 'Foco ' + (++nFoco) : NOMES[s.tipo];
+      var l = document.createElement('label');
+      l.innerHTML = esc(nome) + ' (min)<input type="number" inputmode="numeric" min="1" max="60" value="' + s.min + '">';
+      l.querySelector('input').onchange = function(e){
+        var v = Math.min(60, Math.max(1, Math.round(+e.target.value || 1)));
+        e.target.value = v; segs[i].min = v;
+        if (!comecou()) restante = segs[idx].min*60;
+        else if (i === idx){ restante = Math.min(restante, v*60); if (rodando) fimEm = Date.now() + restante*1000; }
+        $('total').textContent = 'Total: ' + totalMin() + ' min';
+        montarRoteiros(); render();
+      };
+      box.appendChild(l);
+    });
+    $('total').textContent = 'Total: ' + totalMin() + ' min';
+  }
+  function atualizarInicio(){
+    $('comecar').textContent = comecou() && !terminou ? 'Voltar para a sessão' : 'Começar sessão';
+    $('aviso').textContent = comecou() && !terminou ? 'Sessão em andamento. Trocar o roteiro reinicia a sessão.' : '';
+  }
+  function montarBlocos(){
+    var box = $('blocos'); box.innerHTML = '';
+    var n = 0;
+    segs.forEach(function(s, i){
+      if (s.tipo !== 'foco') return; n++;
+      var d = document.createElement('div'); d.className = 'bloco';
+      d.innerHTML = '<span class="n rs ' + (n%2?'r1':'r2') + '">Bloco ' + n + '</span>' +
+        '<input type="text" aria-label="O que estudou no bloco ' + n + '" placeholder="Matéria / tarefa" data-i="' + i + '">' +
+        '<label class="ok"><input type="checkbox" data-ok="' + i + '"> feito</label>';
+      d.querySelector('input[type=text]').oninput = function(e){
+        tarefas[i] = e.target.value;
+        if (i === idx && $('tarefaAgora')) $('tarefaAgora').value = e.target.value;
+      };
+      d.querySelector('input[type=checkbox]').onchange = function(e){ feitos[i] = e.target.checked; };
+      box.appendChild(d);
+    });
+    $('dataSessao').textContent = 'Data: ' + new Date().toLocaleDateString('pt-BR') + ' · Roteiro: ' + ROTEIROS[rotKey].nome;
+  }
+  function montarObs(){
+    var box = $('obs');
+    OBS.forEach(function(t, i){
+      var l = document.createElement('label');
+      l.innerHTML = '<input type="checkbox" data-obs="' + i + '"> <span>' + esc(t) + '</span>';
+      box.appendChild(l);
+    });
+  }
+
+  function montarContexto(){
+    var c = $('contexto'), s = segs[idx];
+    if (terminou){
+      c.innerHTML = '<h2 class="rs r1 h-verde">Sessão concluída</h2><p class="grande">A plantinha floresceu!</p><p>Vocês completaram os ' + totalMin() + ' minutos.</p><button class="btn principal" style="margin-top:12px;width:100%" id="abrirReg">Abrir o registro</button>';
+      $('abrirReg').onclick = function(){ ir('registro'); };
+      return;
+    }
+    if (s.tipo === 'foco'){
+      var n = numBloco(idx);
+      c.innerHTML = '<label class="campo">Bloco ' + n + ': vou estudar<input type="text" id="tarefaAgora" placeholder="Ex.: Ciências, capítulo 3" maxlength="70"></label>' +
+        '<p style="margin-top:10px;font-size:14px;color:var(--suave)">Uma tarefa só. Celular longe. Dúvida? Anote e pergunte na pausa.</p>';
+      var inp = $('tarefaAgora'); inp.value = tarefas[idx] || '';
+      inp.oninput = function(){ tarefas[idx] = inp.value; var r = document.querySelector('[data-i="' + idx + '"]'); if (r) r.value = inp.value; };
+    } else if (s.tipo === 'pausa'){
+      c.innerHTML = '<h2 class="rs r2 h-ouro">Ideia de pausa</h2><p class="grande" id="ideia">' + esc(PAUSAS[pausaIdx % PAUSAS.length]) + '</p><button class="link-btn" id="outra">Outra ideia</button>';
+      $('outra').onclick = function(){ pausaIdx++; $('ideia').textContent = PAUSAS[pausaIdx % PAUSAS.length]; };
+    } else {
+      c.innerHTML = '<h2 class="rs r1 h-verde">Fechamento</h2><p class="grande">Como foi hoje?</p><p>O que funcionou? O que foi difícil? O que fica combinado para estudar em casa?</p>';
+    }
+  }
+
+  /* ---------- planta ---------- */
+  var folhas = document.querySelectorAll('.folhaP');
+  var LIMITES = [0.12, 0.28, 0.44, 0.6, 0.74];
+  function planta(p){
+    $('caule').setAttribute('stroke-dashoffset', String(1 - Math.min(1, p/0.88)));
+    $('caule').style.opacity = p > 0.005 ? 1 : 0;
+    $('broto').classList.toggle('on', p < 0.06);
+    folhas.forEach(function(f, i){ f.classList.toggle('on', p >= LIMITES[i]); });
+    $('botao').classList.toggle('on', p >= 0.86 && !terminou);
+    $('flor').classList.toggle('on', terminou);
+    $('brilhos').classList.toggle('on', terminou);
+    $('estagio').textContent = terminou ? 'floresceu!' : p >= 0.86 ? 'quase lá: já tem um botão' : p >= 0.44 ? 'crescendo' : p > 0.02 ? 'brotando' : 'semente plantada';
+  }
+
+  /* ---------- render ---------- */
+  function render(){
+    var s = segs[idx];
+    document.body.classList.remove('m-foco','m-pausa','m-fech');
+    document.body.classList.add('m-' + s.tipo);
+    document.body.classList.toggle('regando', rodando && s.tipo === 'pausa');
+    $('topoRot').textContent = ROTEIROS[rotKey].nome + ' · ' + totalMin() + ' min';
+    $('modo').textContent = terminou ? 'Concluída' : (s.tipo==='foco' ? 'Foco · bloco ' + numBloco(idx) : NOMES[s.tipo]);
+    $('tempo').textContent = terminou ? '00:00' : fmt(restante);
+    $('barra').style.width = (terminou ? 100 : (1 - restante/(s.min*60))*100) + '%';
+    var faltam = Math.ceil((totalSeg() - decorrido())/60);
+    $('info').textContent = terminou ? 'Sessão de ' + totalMin() + ' min concluída' : 'Etapa ' + (idx+1) + ' de ' + segs.length + ' · faltam ' + faltam + ' min';
+    $('iniciar').textContent = terminou ? 'Nova sessão' : rodando ? 'Pausar' : (decorrido() > 0 ? 'Continuar' : 'Iniciar');
+    document.title = (rodando ? fmt(restante) + ' · ' : '') + 'Pomodoro da Sessão';
+
+    var lista = $('etapas'); lista.innerHTML = '';
+    segs.forEach(function(x, i){
+      var li = document.createElement('li');
+      var agora = i === idx && !terminou;
+      li.className = 'etapa rs ' + (i%2?'r2':'r1') + ' ' + x.tipo + (i < idx || terminou ? ' feito' : '') + (agora ? ' agora' : '');
+      li.innerHTML = '<span>' + NOMES[x.tipo] + (agora ? '<span class="tag">agora</span>' : '') + '</span><span class="min">' + x.min + ' min</span>';
+      if (agora) li.setAttribute('aria-current', 'step');
+      lista.appendChild(li);
+    });
+    planta(terminou ? 1 : decorrido()/totalSeg());
+  }
+
+  /* ---------- tempo ---------- */
+  function tick(){
+    restante = (fimEm - Date.now())/1000;
+    if (restante <= 0){ restante = 0; avancar(true); return; }
+    render();
+  }
+  function iniciar(){
+    if (rodando || terminou) return;
+    rodando = true; fimEm = Date.now() + restante*1000;
+    if (segs[idx].tipo === 'foco' && restante === segs[idx].min*60) $('msg').textContent = sorteia(FOCO_MSGS);
+    timer = setInterval(tick, 250);
+    manterTela(true); render();
+  }
+  function parar(){ rodando = false; clearInterval(timer); manterTela(false); }
+
+  function avancar(auto){
+    if (segs[idx].tipo === 'foco' && auto){ feitos[idx] = true; var cb = document.querySelector('[data-ok="' + idx + '"]'); if (cb) cb.checked = true; }
+    if (idx === segs.length - 1){ concluir(); return; }
+    var continuar = rodando && (!auto || $('auto').checked);
+    parar();
+    idx++; restante = segs[idx].min*60;
+    if (auto) som();
+    var t = segs[idx].tipo;
+    $('msg').textContent = t === 'pausa' ? 'Hora da pausa! Bloco concluído.' : t === 'fech' ? 'Última etapa: hora de conversar sobre a sessão.' : sorteia(FOCO_MSGS);
+    if (t === 'pausa') pausaIdx++;
+    montarContexto();
+    if (continuar) iniciar(); else render();
+  }
+  function concluir(){
+    parar(); terminou = true; restante = 0; som();
+    $('msg').textContent = 'Sessão concluída. Parabéns pelo esforço!';
+    montarContexto(); render();
+  }
+
+  function som(){
+    if (!$('som').checked) return;
+    try{
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [523, 659, 784].forEach(function(f, i){
+        var o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime + i*0.25;
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.22, t+0.03); g.gain.exponentialRampToValueAtTime(0.001, t+1);
+        o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t+1.1);
+      });
+    }catch(e){}
+  }
+  function manterTela(on){
+    try{
+      if (on && navigator.wakeLock && !wake) navigator.wakeLock.request('screen').then(function(w){ wake = w; }).catch(function(){});
+      if (!on && wake){ wake.release(); wake = null; }
+    }catch(e){}
+  }
+
+  /* ---------- registro ---------- */
+  function resumo(){
+    var linhas = [];
+    linhas.push('Sessão de estudos (Pomodoro) — ' + new Date().toLocaleDateString('pt-BR'));
+    linhas.push('Estudante: ' + ($('aluno').value.trim() || '—'));
+    linhas.push('Roteiro: ' + ROTEIROS[rotKey].nome + ' (' + segs.map(function(s){ return s.min; }).join(' · ') + ' min, total ' + totalMin() + ' min)');
+    linhas.push('Tempo realizado: ' + (terminou ? totalMin() : Math.round(decorrido()/60)) + ' min' + (terminou ? ' (sessão completa)' : ''));
+    linhas.push('');
+    linhas.push('Blocos de foco:');
+    segs.forEach(function(s, i){
+      if (s.tipo !== 'foco') return;
+      linhas.push('- Bloco ' + numBloco(i) + ' (' + s.min + ' min): ' + (tarefas[i] || 'sem registro') + ' — ' + (feitos[i] ? 'concluído' : 'não concluído'));
+    });
+    var obs = [];
+    document.querySelectorAll('[data-obs]').forEach(function(c){ if (c.checked) obs.push(OBS[+c.dataset.obs]); });
+    if (obs.length){ linhas.push(''); linhas.push('Observações:'); obs.forEach(function(o){ linhas.push('- ' + o); }); }
+    var n = $('notas').value.trim();
+    if (n){ linhas.push(''); linhas.push('Anotações: ' + n); }
+    return linhas.join('\n');
+  }
+  function copiar(){
+    var t = resumo();
+    var ok = function(){ $('feito').textContent = 'Resumo copiado. É só colar no prontuário.'; setTimeout(function(){ $('feito').textContent=''; }, 4000); };
+    function fallback(){
+      var ta = document.createElement('textarea'); ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){ $('feito').textContent = 'Não consegui copiar automaticamente.'; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(t).then(ok, fallback); }
+    else fallback();
+  }
+
+  /* ---------- eventos ---------- */
+  $('comecar').onclick = function(){ if (terminou) novaSessao(); ir('sessao'); };
+  $('iniciar').onclick = function(){ if (terminou){ novaSessao(); return; } rodando ? (parar(), render()) : iniciar(); };
+  $('pular').onclick = function(){ if (!terminou) avancar(false); };
+  $('reiniciar').onclick = novaSessao;
+  $('tela').onclick = function(){
+    try{
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    }catch(e){}
+  };
+  $('copiar').onclick = copiar;
+  $('imprimir').onclick = function(){ window.print(); };
+
+  montarObs();
+  carregar();
+})();
+</script>
+</body>
+</html>
