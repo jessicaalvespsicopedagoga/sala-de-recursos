@@ -22,7 +22,7 @@
   header .nome{margin-top:14px;font-weight:600;color:var(--amarelo)}
   nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:-26px auto 0;position:relative;padding:0 16px}
   nav a{background:#fff;color:var(--azul);text-decoration:none;font-weight:600;padding:10px 18px;border-radius:999px;box-shadow:0 4px 14px rgba(31,42,92,.12);font-size:14px}
-  main{max-width:1000px;margin:0 auto;padding:36px 18px 20px}
+  main{max-width:1150px;margin:0 auto;padding:36px 18px 20px}
   section{margin-bottom:44px}
   h2{font-weight:800;font-size:22px;margin-bottom:6px;display:inline-block;padding:2px 12px;border-radius:6px;box-shadow:4px 4px 0 #000}
   #pdfs h2{background:var(--amarelo)} #jogos h2{background:var(--verde)} #demos h2{background:var(--rosa)}
@@ -40,6 +40,10 @@
   .vip h2{background:none;box-shadow:none;color:#fff;padding:0}
   .vip p{margin:8px 0 16px;opacity:.95}
   .vip a{background:#fff;color:#128c7e;text-decoration:none;font-weight:800;padding:12px 26px;border-radius:999px;display:inline-block}
+  .colunas{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-bottom:44px}
+  .colunas section{margin-bottom:0}
+  .colunas .grade{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+  @media(max-width:780px){.colunas{grid-template-columns:1fr}}
   footer{text-align:center;font-size:13px;color:var(--cinza);padding:24px 16px 40px}
   footer a{color:var(--azul2)}
 </style>
@@ -55,11 +59,13 @@
 
 <nav>
   <a href="#pdfs">📄 PDFs</a>
-  <a href="#demos">✨ Demos</a>
+  <a href="#demos">🎲 Jogos interativos</a>
   <a href="#vip">💬 Canal VIP</a>
 </nav>
 
 <main>
+
+  <div class="colunas">
 
   <!-- ============ PDFs GRATUITOS ============ -->
   <section id="pdfs">
@@ -120,24 +126,26 @@
     </div>
   </section>
 
-  <!-- ============ DEMOS ============ -->
+  <!-- ============ JOGOS INTERATIVOS ============ -->
   <section id="demos">
-    <h2>Demonstrações</h2>
-    <p class="sub">Experimente um pedacinho dos jogos completos. Abre direto no navegador (melhor no Chrome).</p>
+    <h2>Jogos interativos</h2>
+    <p class="sub">Jogue direto no navegador (melhor no Chrome).</p>
     <div class="grade">
 
       <div class="card">
         <div class="icone">🏫</div>
-        <span class="tag">Demo · Adolescentes</span>
+        <span class="tag">Jogo interativo · Adolescentes</span>
         <h3>Escape da Escola</h3>
         <p>Escape room interativo para adolescentes do 5º ao 8º ano, com desafios de português e matemática.</p>
         <a class="btn" href="escape-da-escola-demo.html" target="_blank" data-goatcounter-click="demo-escape-da-escola">Experimentar</a>
       </div>
 
-      <!-- Para adicionar outra demo: copie o card acima, troque o nome, o texto e o link -->
+      <!-- Para adicionar outro jogo: copie o card acima, troque o nome, o texto e o link -->
 
     </div>
   </section>
+
+  </div>
 
   <!-- ============ CANAL VIP ============ -->
   <section id="vip" class="vip">
