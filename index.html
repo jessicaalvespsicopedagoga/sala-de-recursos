@@ -3,207 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sala de Recursos | Jessica Alves – Psicopedagogia e Desenvolvimento</title>
-<meta name="description" content="Materiais gratuitos, jogos e demonstrações da psicopedagoga Jessica Alves.">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<title>Sala de Recursos | Jessica Alves – Psicopedagoga</title>
+<meta name="description" content="Jogos gratuitos, demonstrações e PDFs da psicopedagoga Jessica Alves.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --azul:#1f2a5c; --azul2:#3b4a9a; --amarelo:#ffd54a; --rosa:#ff8fb1; --verde:#7ed6a5;
-    --fundo:#f7f8fc; --texto:#2b2f45; --cinza:#6b7088;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Poppins',sans-serif;background:var(--fundo);color:var(--texto);line-height:1.5}
-  header{background:linear-gradient(135deg,var(--azul),var(--azul2));color:#fff;text-align:center;padding:48px 20px 64px;position:relative;overflow:hidden}
-  header::before,header::after{content:"✦";position:absolute;color:var(--amarelo);opacity:.6;font-size:28px}
-  header::before{top:24px;left:12%} header::after{bottom:30px;right:14%;font-size:20px}
-  .estrela{font-size:44px}
-  header h1{font-weight:800;font-size:clamp(28px,6vw,44px);margin:8px 0 4px}
-  header p{opacity:.9;font-size:15px}
-  header .nome{margin-top:14px;font-weight:600;color:var(--amarelo)}
-  nav{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:-26px auto 0;position:relative;padding:0 16px}
-  nav a{background:#fff;color:var(--azul);text-decoration:none;font-weight:600;padding:10px 18px;border-radius:999px;box-shadow:0 4px 14px rgba(31,42,92,.12);font-size:14px}
-  main{max-width:1150px;margin:0 auto;padding:36px 18px 20px}
-  section{margin-bottom:44px}
-  h2{font-weight:800;font-size:22px;margin-bottom:6px;display:inline-block;padding:2px 12px;border-radius:6px;box-shadow:4px 4px 0 #000}
-  #pdfs h2{background:var(--amarelo)} #jogos h2{background:var(--verde)} #demos h2{background:var(--rosa)}
-  .sub{color:var(--cinza);font-size:14px;margin:10px 0 18px}
-  .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-  .card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 16px rgba(31,42,92,.08);display:flex;flex-direction:column;gap:8px;transition:transform .15s}
-  .card:hover{transform:translateY(-3px)}
-  .icone{font-size:34px}
-  .card h3{font-size:17px;font-weight:600}
-  .card p{font-size:13px;color:var(--cinza);flex:1}
-  .tag{font-size:11px;font-weight:600;color:var(--azul2);text-transform:uppercase;letter-spacing:.5px}
-  .btn{display:inline-block;text-align:center;background:var(--azul);color:#fff;text-decoration:none;padding:10px;border-radius:10px;font-weight:600;font-size:14px}
-  .btn:hover{background:var(--azul2)}
-  .vip{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border-radius:20px;padding:28px;text-align:center;margin-bottom:30px}
-  .vip h2{background:none;box-shadow:none;color:#fff;padding:0}
-  .vip p{margin:8px 0 16px;opacity:.95}
-  .vip a{background:#fff;color:#128c7e;text-decoration:none;font-weight:800;padding:12px 26px;border-radius:999px;display:inline-block}
-  .colunas{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-bottom:44px}
-  .colunas section{margin-bottom:0}
-  .colunas .grade{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
-  @media(max-width:780px){.colunas{grid-template-columns:1fr}}
-  footer{text-align:center;font-size:13px;color:var(--cinza);padding:24px 16px 40px}
-  footer a{color:var(--azul2)}
+:root{--bg:#f6efe7;--papel:#fdf9f4;--tinta:#3e2f27;--suave:#7a6a5e;--verde:#4f6b4a;--ouro:#c9a24a;--linha:#eadfd2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito Sans',system-ui,sans-serif;color:var(--tinta);background:linear-gradient(180deg,#f6efe7,#f3e8dc);min-height:100vh}
+a{color:inherit}
+.topo{border-bottom:1px solid var(--linha);background:rgba(253,249,244,.85);backdrop-filter:blur(6px);position:sticky;top:0;z-index:5}
+.topo .in{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca .logo{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:24px;box-shadow:0 2px 8px #0001}
+.marca b{font:italic 600 24px 'Cormorant Garamond',serif;display:block;line-height:1}
+.marca small{font-size:11px;letter-spacing:.22em;color:#c0846a;font-weight:800}
+.site{background:var(--tinta);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:10px 18px;border-radius:999px}
+main{max-width:1040px;margin:0 auto;padding:56px 20px 30px}
+.olho{font-size:13px;letter-spacing:.2em;font-weight:800;color:var(--suave);text-transform:uppercase}
+.olho::before{content:"✦ ";color:var(--ouro)}
+h1{font:italic 600 clamp(38px,6vw,64px)/1.05 'Cormorant Garamond',serif;margin:14px 0 16px}
+.intro{font-size:18px;line-height:1.6;color:var(--suave);max-width:600px}
+.filtros{display:flex;flex-wrap:wrap;gap:10px;margin:34px 0 28px}
+.filtros button{font:700 15px 'Nunito Sans',sans-serif;border:1px solid var(--linha);background:var(--papel);color:var(--tinta);padding:11px 18px;border-radius:999px;cursor:pointer}
+.filtros button.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.filtros .sep{width:1px;background:var(--linha);margin:4px 4px}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:20px}
+.card{background:var(--papel);border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(62,47,39,.07);display:flex;flex-direction:column;transition:transform .2s}
+.card:hover{transform:translateY(-4px)}
+.capa{height:210px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center}
+.capa .em{font-size:64px;filter:drop-shadow(0 4px 6px #0002)}
+.capa .ct{font:italic 600 26px/1.1 'Cormorant Garamond',serif;color:#fff;text-shadow:0 1px 3px #0003}
+.novo{position:absolute;top:14px;left:14px;background:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:5px 10px;border-radius:999px;text-transform:uppercase}
+.corpo{padding:18px 18px 18px;display:flex;flex-direction:column;flex:1}
+.eb{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--verde)}
+.card h3{font:600 25px/1.15 'Cormorant Garamond',serif;margin:6px 0 6px}
+.card p{font-size:14px;line-height:1.5;color:var(--suave);flex:1}
+.pe{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.preco{font:italic 500 24px 'Cormorant Garamond',serif;color:var(--suave)}
+.btn{background:var(--verde);color:#fff;text-decoration:none;font-weight:800;font-size:14px;padding:10px 18px;border-radius:12px}
+.btn:hover{background:#3d5639}
+.vip{margin:56px 0 10px;background:var(--tinta);color:#f6efe7;border-radius:26px;padding:38px 26px;text-align:center}
+.vip h2{font:italic 600 36px 'Cormorant Garamond',serif;margin-bottom:8px}
+.vip p{opacity:.85;margin-bottom:20px}
+.vip a{background:var(--ouro);color:var(--tinta);text-decoration:none;font-weight:800;padding:13px 26px;border-radius:999px;display:inline-block}
+footer{text-align:center;font-size:13px;color:var(--suave);padding:20px 16px 40px;line-height:1.7}
+.vazio{display:none;color:var(--suave);padding:20px 0}
 </style>
 </head>
 <body>
-
-<header>
-  <div class="estrela">🧑‍🚀⭐</div>
-  <h1>Sala de Recursos</h1>
-  <p>Materiais gratuitos, jogos e demonstrações para terapeutas, professores e famílias</p>
-  <p class="nome">Jessica Alves · Psicopedagogia e Desenvolvimento</p>
-</header>
-
-<nav>
-  <a href="#pdfs">📄 PDFs</a>
-  <a href="#demos">🎲 Jogos interativos</a>
-  <a href="#vip">💬 Canal VIP</a>
-</nav>
-
+<div class="topo"><div class="in">
+  <a class="marca" href="https://psicopedagodesenvolve.com.br" target="_blank"><span class="logo">🧑‍🚀</span><span><b>Jessica Alves</b><small>PSICOPEDAGOGA</small></span></a>
+  <a class="site" href="https://psicopedagodesenvolve.com.br/recursos" target="_blank">Materiais completos</a>
+</div></div>
 <main>
-
-  <div class="colunas">
-
-  <!-- ============ PDFs GRATUITOS ============ -->
-  <section id="pdfs">
-    <h2>PDFs gratuitos</h2>
-    <p class="sub">Clique para abrir e baixar. Prontos para imprimir.</p>
-    <div class="grade">
-
-      <div class="card">
-        <div class="icone">🔤</div>
-        <span class="tag">PDF</span>
-        <h3>Caça-Palavras e Caça Visual</h3>
-        <p>Encontre palavras e figuras escondidas.</p>
-        <a class="btn" href="caca-palavras-caca-visual.pdf" target="_blank" data-goatcounter-click="pdf-caca-palavras-caca-visual">Abrir PDF</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">🔍</div>
-        <span class="tag">PDF</span>
-        <h3>Caça Visual: Encontre e Converse</h3>
-        <p>Atenção visual e conversa a partir das imagens.</p>
-        <a class="btn" href="caca-visual-encontre-e-converse.pdf" target="_blank" data-goatcounter-click="pdf-caca-visual-encontre-e-converse">Abrir PDF</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">👀</div>
-        <span class="tag">PDF</span>
-        <h3>Memória Visual</h3>
-        <p>Atividades de memória visual para imprimir.</p>
-        <a class="btn" href="memoria-visual.pdf" target="_blank" data-goatcounter-click="pdf-memoria-visual">Abrir PDF</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">🧩</div>
-        <span class="tag">PDF</span>
-        <h3>Racha-cuca</h3>
-        <p>Desafios de raciocínio para imprimir.</p>
-        <a class="btn" href="racha-cuca.pdf" target="_blank" data-goatcounter-click="pdf-racha-cuca">Abrir PDF</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">⭐</div>
-        <span class="tag">PDF</span>
-        <h3>Rumo à Estrela</h3>
-        <p>Prancha de bolinhas para jogar com cartas de UNO.</p>
-        <a class="btn" href="rumo-a-estrela.pdf" target="_blank" data-goatcounter-click="pdf-rumo-a-estrela">Abrir PDF</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">🔠</div>
-        <span class="tag">PDF</span>
-        <h3>Torto</h3>
-        <p>Jogo de palavras estilo Coquetel (a partir do 5º ano).</p>
-        <a class="btn" href="torto.pdf" target="_blank" data-goatcounter-click="pdf-torto">Abrir PDF</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">📖</div>
-        <span class="tag">PDF · 1º ao 5º ano</span>
-        <h3>Caça-rimas</h3>
-        <p>Versinhos para completar com a palavra que rima (1º ao 5º ano).</p>
-        <a class="btn" href="leitura-1o-ao-5o-ano.pdf" target="_blank" data-goatcounter-click="pdf-leitura-1-5">Abrir PDF</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">📚</div>
-        <span class="tag">PDF · 6º ao 9º ano</span>
-        <h3>Detetive de textos</h3>
-        <p>Inferência: descubra pelas pistas o que o texto não diz (6º ao 9º ano).</p>
-        <a class="btn" href="leitura-6o-ao-9o-ano.pdf" target="_blank" data-goatcounter-click="pdf-leitura-6-9">Abrir PDF</a>
-      </div>
-
-      <!-- Para adicionar outro PDF: copie um card acima, troque o nome, o texto e o link -->
-
-    </div>
-  </section>
-
-  <!-- ============ JOGOS INTERATIVOS ============ -->
-  <section id="demos">
-    <h2>Jogos interativos</h2>
-    <p class="sub">Jogue direto no navegador (melhor no Chrome). Os grátis são completos; as demos mostram um pedacinho do jogo.</p>
-    <div class="grade">
-
-      <div class="card">
-        <div class="icone">🌱</div>
-        <span class="tag">Interativo grátis · Adolescentes</span>
-        <h3>Pomodoro da Sessão</h3>
-        <p>50 minutos de estudo com pausas e uma plantinha que cresce até florescer. Tem registro para o terapeuta.</p>
-        <a class="btn" href="pomodoro-sessao.html" target="_blank" data-goatcounter-click="gratis-pomodoro">Abrir</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">🍌</div>
-        <span class="tag">Interativo grátis · Crianças</span>
-        <h3>Meu Primeiro Livro Interativo</h3>
-        <p>Livro das frutas para ler, ouvir e brincar na tela.</p>
-        <a class="btn" href="livro-interativo-frutas.html" target="_blank" data-goatcounter-click="gratis-livro-frutas">Abrir</a>
-      </div>
-
-      <div class="card">
-        <div class="icone">🔤</div>
-        <span class="tag">Demo · 1º ano</span>
-        <h3>Jogo das Sílabas</h3>
-        <p>Gire os dados e forme o nome da figura. A demo tem 3 das 12 palavras.</p>
-        <a class="btn" href="jogo-das-silabas-demo.html" target="_blank" data-goatcounter-click="demo-jogo-das-silabas">Experimentar</a>
-      </div>
-
-
-      <div class="card">
-        <div class="icone">🏫</div>
-        <span class="tag">Demo · Adolescentes</span>
-        <h3>Escape da Escola</h3>
-        <p>Escape room interativo para adolescentes do 5º ao 8º ano, com desafios de português e matemática.</p>
-        <a class="btn" href="escape-da-escola-demo.html" target="_blank" data-goatcounter-click="demo-escape-da-escola">Experimentar</a>
-      </div>
-
-      <!-- Para adicionar outro jogo: copie o card acima, troque o nome, o texto e o link -->
-
-    </div>
-  </section>
-
+  <div class="olho">Sala de Recursos · Canal VIP</div>
+  <h1>Jogos e materiais para aprender brincando</h1>
+  <p class="intro">Jogos gratuitos para abrir na hora, demonstrações dos jogos completos e PDFs prontos para imprimir. Para profissionais, educadores e famílias.</p>
+  <div class="filtros" id="filtros">
+    <button class="on" data-f="todos">Todos</button><button data-f="gratis">Grátis</button><button data-f="demos">Demos</button><button data-f="interativo">Interativos</button><button data-f="pdfs">PDFs</button>
+    <span class="sep"></span><button data-f="criancas">Crianças</button><button data-f="adolescentes">Adolescentes</button>
   </div>
-
-  <!-- ============ CANAL VIP ============ -->
-  <section id="vip" class="vip">
-    <h2>💬 Entre no Canal VIP</h2>
+  <div class="grade" id="grade">
+  <article class="card" data-f="gratis interativo adolescentes">
+    <div class="capa" style="background:#8ea98a"><span class="novo">Novo</span><div class="em">🌱</div><div class="ct">Pomodoro da Sessão</div></div>
+    <div class="corpo">
+      <div class="eb">Interativo · Adolescentes</div><h3>Pomodoro da Sessão</h3><p>50 minutos de estudo com pausas e uma plantinha que cresce até florescer. Tem registro para o terapeuta.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="pomodoro-sessao.html" target="_blank" data-goatcounter-click="gratis-pomodoro">Abrir</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis interativo criancas">
+    <div class="capa" style="background:#c98f86"><div class="em">🍎</div><div class="ct">Meu primeiro livro interativo</div></div>
+    <div class="corpo">
+      <div class="eb">E-book interativo · Educação Infantil</div><h3>Meu primeiro livro interativo</h3><p>6 atividades com frutas: vogais, alfabeto, maior e menor, labirinto, sombras e contagem. Dá para imprimir.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="livro-interativo-frutas.html" target="_blank" data-goatcounter-click="gratis-livro-frutas">Abrir</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis interativo criancas">
+    <div class="capa" style="background:#93a383"><div class="em">🧩</div><div class="ct">Memória Visual</div></div>
+    <div class="corpo">
+      <div class="eb">Jogo online · Crianças</div><h3>Memória Visual</h3><p>Memorize os objetos e encontre todos depois. Atenção e memória de curto prazo.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="memoria-visual.html" target="_blank" data-goatcounter-click="gratis-memoria-visual">Jogar</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis interativo criancas adolescentes">
+    <div class="capa" style="background:#d4ac5a"><div class="em">🧠</div><div class="ct">Racha-Cuca</div></div>
+    <div class="corpo">
+      <div class="eb">Jogo online · Todas as idades</div><h3>Racha-Cuca</h3><p>Deslize as peças até montar a sequência de números ou palavras. Versões 3×3 e 4×4.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="racha-cuca.html" target="_blank" data-goatcounter-click="gratis-racha-cuca">Jogar</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis interativo criancas adolescentes">
+    <div class="capa" style="background:#b7765a"><div class="em">🛒</div><div class="ct">Memória em Compras</div></div>
+    <div class="corpo">
+      <div class="eb">Jogo online · Todas as idades</div><h3>Memória em Compras</h3><p>Memória, cálculo e troco no mercadinho. Da pré-escola aos adultos.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="memoria-em-compras.html" target="_blank" data-goatcounter-click="gratis-memoria-em-compras">Jogar</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="demos interativo criancas">
+    <div class="capa" style="background:#d9a85a"><span class="novo">Novo</span><div class="em">🔤</div><div class="ct">Jogo das Sílabas</div></div>
+    <div class="corpo">
+      <div class="eb">Demo · 1º ano</div><h3>Jogo das Sílabas</h3><p>Gire os dados e forme o nome da figura. A demo tem 3 das 12 palavras do jogo completo.</p>
+      <div class="pe"><span class="preco">Demo</span><a class="btn" href="jogo-das-silabas-demo.html" target="_blank" data-goatcounter-click="demo-jogo-das-silabas">Experimentar</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="demos interativo adolescentes">
+    <div class="capa" style="background:#6f86a8"><div class="em">🏫</div><div class="ct">Escape da Escola</div></div>
+    <div class="corpo">
+      <div class="eb">Demo · 5º ao 8º ano</div><h3>Escape da Escola</h3><p>Escape room com desafios de português e matemática para usar no atendimento online.</p>
+      <div class="pe"><span class="preco">Demo</span><a class="btn" href="escape-da-escola-demo.html" target="_blank" data-goatcounter-click="demo-escape-da-escola">Experimentar</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs criancas">
+    <div class="capa" style="background:#c99a6b"><span class="novo">Novo</span><div class="em">📖</div><div class="ct">Caça-rimas</div></div>
+    <div class="corpo">
+      <div class="eb">PDF · 1º ao 5º ano</div><h3>Caça-rimas</h3><p>Versinhos para completar com a palavra que rima.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="leitura-1o-ao-5o-ano.pdf" target="_blank" data-goatcounter-click="pdf-leitura-1-5">Abrir PDF</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs adolescentes">
+    <div class="capa" style="background:#7f9a9a"><span class="novo">Novo</span><div class="em">🕵️</div><div class="ct">Detetive de textos</div></div>
+    <div class="corpo">
+      <div class="eb">PDF · 6º ao 9º ano</div><h3>Detetive de textos</h3><p>Inferência: descubra pelas pistas o que o texto não diz.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="leitura-6o-ao-9o-ano.pdf" target="_blank" data-goatcounter-click="pdf-leitura-6-9">Abrir PDF</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs adolescentes">
+    <div class="capa" style="background:#a8876f"><div class="em">🔠</div><div class="ct">Torto</div></div>
+    <div class="corpo">
+      <div class="eb">PDF · a partir do 5º ano</div><h3>Torto</h3><p>Jogo de palavras estilo Coquetel, com gabarito.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="torto.pdf" target="_blank" data-goatcounter-click="pdf-torto">Abrir PDF</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs criancas">
+    <div class="capa" style="background:#93a383"><div class="em">👀</div><div class="ct">Memória Visual (PDF)</div></div>
+    <div class="corpo">
+      <div class="eb">PDF</div><h3>Memória Visual (PDF)</h3><p>Versão para imprimir do jogo de memória.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="memoria-visual.pdf" target="_blank" data-goatcounter-click="pdf-memoria-visual">Abrir PDF</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs criancas">
+    <div class="capa" style="background:#d4ac5a"><div class="em">🧠</div><div class="ct">Racha-Cuca (PDF)</div></div>
+    <div class="corpo">
+      <div class="eb">PDF</div><h3>Racha-Cuca (PDF)</h3><p>Versão para imprimir do Racha-Cuca.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="racha-cuca.pdf" target="_blank" data-goatcounter-click="pdf-racha-cuca">Abrir PDF</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs criancas">
+    <div class="capa" style="background:#b7856a"><div class="em">⭐</div><div class="ct">Rumo à Estrela</div></div>
+    <div class="corpo">
+      <div class="eb">PDF</div><h3>Rumo à Estrela</h3><p>Prancha de bolinhas para jogar com cartas de UNO.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="rumo-a-estrela.pdf" target="_blank" data-goatcounter-click="pdf-rumo-a-estrela">Abrir PDF</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs criancas">
+    <div class="capa" style="background:#8a9bb0"><div class="em">🔍</div><div class="ct">Caça Visual: Encontre e Converse</div></div>
+    <div class="corpo">
+      <div class="eb">PDF</div><h3>Caça Visual: Encontre e Converse</h3><p>Atenção visual e conversa a partir das imagens.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="caca-visual-encontre-e-converse.pdf" target="_blank" data-goatcounter-click="pdf-caca-visual-encontre-e-converse">Abrir PDF</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs criancas">
+    <div class="capa" style="background:#b39a7c"><div class="em">🔎</div><div class="ct">Caça-Palavras e Caça Visual</div></div>
+    <div class="corpo">
+      <div class="eb">PDF</div><h3>Caça-Palavras e Caça Visual</h3><p>Encontre palavras e figuras escondidas.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="caca-palavras-caca-visual.pdf" target="_blank" data-goatcounter-click="pdf-caca-palavras-caca-visual">Abrir PDF</a></div>
+    </div>
+  </article>
+  </div>
+  <p class="vazio" id="vazio">Nada por aqui ainda. Novidades chegam primeiro no Canal VIP!</p>
+  <section class="vip" id="vip">
+    <h2>Entre no Canal VIP</h2>
     <p>Receba primeiro os novos materiais gratuitos e as novidades dos jogos.</p>
     <a href="https://www.whatsapp.com/channel/0029Vb9X0xM7Noa8l6cnl22J" target="_blank" data-goatcounter-click="clique-canal-vip">Quero entrar</a>
   </section>
-
 </main>
-
-<footer>
-  © Jessica Alves – Psicopedagogia e Desenvolvimento ·
-  <a href="https://instagram.com/jessicaa_psicopedagoga" target="_blank">@jessicaa_psicopedagoga</a><br>
-  Materiais de uso pessoal e profissional. Não é permitida a revenda.
-</footer>
-
-<script data-goatcounter="https://jessicaalvespsicopedagoga.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+<footer>© Jessica Alves – Psicopedagogia e Desenvolvimento · <a href="https://instagram.com/jessicaa_psicopedagoga" target="_blank">@jessicaa_psicopedagoga</a><br>Materiais de uso pessoal e profissional. Não é permitida a revenda.</footer>
+<script>
+document.querySelectorAll('#filtros button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#filtros button').forEach(x=>x.classList.toggle('on',x===b));
+  const f=b.dataset.f;let n=0;
+  document.querySelectorAll('.card').forEach(c=>{const v=f==='todos'||c.dataset.f.split(' ').includes(f);c.style.display=v?'':'none';if(v)n++});
+  document.getElementById('vazio').style.display=n?'none':'block';
+});
+</script>
+<script data-goatcounter="https://jessicaalvespsicopedagoga.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

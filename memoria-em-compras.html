@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Memória em Compras</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;font-family:'Nunito Sans',system-ui,sans-serif}
+h1,h2,h3,.f{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600}
+.logo{font-family:'Cormorant Garamond',Georgia,serif!important;font-style:italic;font-size:2.8rem;color:#3b2e25;margin:0}
+.sub{letter-spacing:.3em;font-size:.8rem;color:#9c5a39;font-weight:800}
+body{margin:0;min-height:100vh;background:#f6eee4 radial-gradient(60% 40% at 10% 0%,#f2d3bb,transparent 70%) fixed;color:#3b2e25}
+#app{max-width:760px;margin:0 auto;padding:14px}
+.card{background:#fff;border-radius:22px;padding:18px;box-shadow:0 10px 28px rgba(59,46,37,.08);border:1px solid rgba(59,46,37,.1);background:#fffaf3;margin-bottom:14px}
+.btn{border:0;border-radius:16px;padding:12px 18px;font-weight:800;font-size:1rem;color:#fff;background:#b8704b;cursor:pointer;width:100%;margin-top:8px}
+.btn.g{background:#6f8461}.btn.o{background:#f2d3bb;color:#3b2e25}.btn.r{background:#e11d48}.btn.s{background:#e2e8f0;color:#334155}
+.btn:active{transform:scale(.97)}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
+.chip{border:2px solid #e2e8f0;background:#fff;border-radius:14px;padding:10px;font-weight:800;cursor:pointer;color:#334155}
+.chip.on{border-color:#b8704b;background:#f6dccb;color:#9c5a39}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.it{background:#fff;border:0;border-radius:18px;padding:8px 2px;box-shadow:0 3px 8px #0002;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-weight:800;font-size:.75rem;color:#475569}
+.it b{font-size:2.2rem;line-height:1.2}.it i{color:#6f8461;font-style:normal}
+.pre .it b{font-size:2.8rem}.pre .it{font-size:.95rem}
+.shelf{background:linear-gradient(#F6E6D2,#E3B98E)}
+.line{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:14px;padding:10px 14px;margin:6px 0;box-shadow:0 1px 4px #0002;font-size:1.3rem;font-weight:800}
+.pre .line{font-size:1.8rem}
+.bar{height:14px;background:#e2e8f0;border-radius:9px;overflow:hidden;margin:10px 0}
+.bar>div{height:100%;background:#b8704b;transition:width 1s linear}
+.big{width:64px;height:64px;line-height:64px;border-radius:50%;background:#e1e8d6;color:#6f8461;margin:0 auto 8px;text-align:center;font-size:2rem;font-weight:800}
+.cart{min-height:64px;display:flex;flex-wrap:wrap;gap:8px;background:#f8fafc;border-radius:14px;padding:10px;align-items:center}
+.ci{background:#f6dccb;border-radius:12px;padding:4px 8px;font-weight:800;display:flex;align-items:center;gap:6px}
+.ci button{border:0;background:#fff;border-radius:50%;width:26px;height:26px;font-weight:800;cursor:pointer}
+.cup{background:#FBF3E8;border:2px dashed #b8704b;font-family:'Courier New',monospace}
+.cup *{font-family:inherit}
+table{width:100%;border-collapse:collapse}td{padding:7px;border-bottom:1px solid #e2e8f0}
+footer{text-align:center;font-size:.75rem;letter-spacing:.25em;font-weight:800;color:#9c5a39;padding:14px 8px}
+@media print{.np{display:none!important}body{background:#fff}.card{box-shadow:none;border:1px solid #ccc}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const I=[['🍎','Maçã',2,250],['🥛','Leite',3,450],['🍞','Pão',4,600],['🥚','Ovo',5,800],['🍌','Banana',2,350],['🧀','Queijo',8,1250],['🥤','Suco',6,550],['🍪','Biscoito',3,300],['🍫','Chocolate',4,500],['🍇','Uva',7,900],['🧼','Sabonete',2,250],['🧸','Brinquedo',9,1500]];
+const S={prof:'pre',mode:'mem',time:20,kind:'fig',name:'',lvl:1,list:[],cart:{},view:'home',st:{}};
+const $=s=>document.querySelector(s),A=$('#app');
+let tm=null,ac=null;
+const rnd=n=>Math.floor(Math.random()*n);
+const pre=()=>S.prof==='pre';
+const P=i=>pre()?I[i][2]*100:I[i][3];
+const M=c=>'R$ '+(c%100?(c/100).toFixed(2).replace('.',','):c/100);
+function snd(f,d=.12){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=f;g.gain.value=.12;o.start();o.stop(ac.currentTime+d)}catch(e){}}
+document.addEventListener('pointerdown',()=>{try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}},{once:true});
+function reset(){S.lvl=S.prof==='adu'?3:1;S.cart={};S.list=[];S.st={rounds:0,ok:0,err:0,hints:0,secs:0,max:1}}
+reset();
+function newList(){
+  const n=pre()?Math.min(2+Math.floor((S.lvl-1)/2),4):Math.min(2+S.lvl,7);
+  const q=pre()?Math.min(1+Math.floor(S.lvl/3),2):Math.min(1+Math.floor(S.lvl/2),4);
+  const ids=[...I.keys()].sort(()=>Math.random()-.5).slice(0,n);
+  S.list=ids.map(i=>({i,q:1+rnd(q)}));S.cart={};
+}
+function go(v){clearInterval(tm);S.view=v;render()}
+function shell(inner,top=true){
+  A.className=pre()?'pre':'';
+  A.innerHTML=(top&&S.view!=='home'&&S.view!=='report'?`<div class="row np" style="margin-bottom:10px"><button class="chip" onclick="if(confirm('Voltar ao menu?'))go('home')">← Menu</button><button class="chip" onclick="go('report')">Relatório</button><div class="chip" style="text-align:center">Fase ${S.lvl}</div></div>`:'')+inner+`<footer><a href='jogos.html' style='color:inherit;text-decoration:none'>← MAIS JOGOS</a> · PSICOPEDAGOGIA E DESENVOLVIMENTO</footer>`;
+}
+function render(){({home,mem,shop,cash,res,report})[S.view]()}
+function opt(k,v,l){return`<button class="chip ${S[k]===v?'on':''}" onclick="S['${k}']=${typeof v==='number'?v:`'${v}'`};home()">${l}</button>`}
+function home(){
+  S.view='home';
+  shell(`<div class="card" style="text-align:center"><h1 class="logo">Memória em Compras</h1><div class="sub" style="margin-top:6px">ATENÇÃO · MEMÓRIA · CÁLCULO</div></div>
+  <div class="card"><b>Nome do participante (opcional)</b><input id="nm" value="${S.name}" placeholder="Nome" oninput="S.name=this.value" style="width:100%;padding:10px;border-radius:12px;border:2px solid #e2e8f0;margin:6px 0 12px;font-size:1rem">
+  <b>Perfil</b><div class="row" style="margin:6px 0 12px">${opt('prof','pre','Pré-escolar')}${opt('prof','fun','Fundamental I')}${opt('prof','adu','Adolescentes e adultos')}</div>
+  <b>Modo</b><div class="row" style="margin:6px 0 12px">${opt('mode','mem','Desafio de Memória')}${opt('mode','story','História Problema')}</div>
+  <b>Lista em</b><div class="row" style="margin:6px 0 12px">${opt('kind','fig','Figuras')}${opt('kind','word','Palavras')}${opt('kind','both','Figuras + palavras')}</div>
+  <b>Tempo para memorizar</b><div class="row" style="margin:6px 0">${opt('time',10,'10s')}${opt('time',20,'20s')}${opt('time',30,'30s')}</div>
+  <button class="btn g" onclick="start()">Começar</button></div>`);
+}
+function start(){reset();snd(600);newList();S.hint=false;go('mem')}
+function label(it){const [e,n]=I[it.i];return S.kind==='fig'?`<span style="font-size:2.4rem">${e}</span>`:S.kind==='word'?`<span>${n}</span>`:`<span><b style="font-size:2rem">${e}</b> ${n}</span>`}
+function mem(){
+  const t=S.hint?5:S.time;let left=t;
+  shell(`<div class="card"><h2 style="text-align:center;margin:0;color:#3b2e25">${S.hint?'Dica: olhe a lista':'Memorize a lista!'}</h2>
+  ${S.mode==='story'?`<p style="text-align:center;font-weight:800">${ctx()}</p>`:''}
+  <div class="bar"><div id="bar" style="width:100%"></div></div>
+  ${S.list.map(l=>`<div class="line">${label(l)}<b style="color:#9c5a39">x${l.q}</b></div>`).join('')}
+  <div style="text-align:center;color:#64748b">Tempo: <b id="tl">${t}</b>s</div>
+  <button class="btn g" onclick="endMem(${t}-parseInt($('#tl').textContent))">Já memorizei</button></div>`);
+  setTimeout(()=>{const b=$('#bar');if(b)b.style.width='0%'},50);
+  if(b=$('#bar'))b.style.transitionDuration=t+'s';
+  tm=setInterval(()=>{left--;const e=$('#tl');if(e)e.textContent=left;if(left<=0)endMem(t)},1000);
+}
+var b;
+function endMem(sec){clearInterval(tm);S.st.secs+=sec;S.hint=false;go('shop')}
+const NAMES=['Maria','João','Sofia','Lucas','Ana'],GOALS=['fazer um bolo','preparar um piquenique','fazer o café da manhã','montar um lanche'];
+function ctx(){return`${S.who||(S.who=NAMES[rnd(5)])} precisa comprar estes itens para ${S.goal||(S.goal=GOALS[rnd(4)])}.`}
+function shop(){
+  const st=S.mode==='story';
+  shell(`<div class="card shelf"><h3 style="text-align:center;margin:0 0 10px;color:#5B3A1A">Prateleira</h3><div class="grid">${I.map((x,i)=>`<button class="it" onclick="add(${i},1)"><b>${x[0]}</b>${x[1]}${st?`<i>${M(P(i))}</i>`:''}</button>`).join('')}</div></div>
+  <div class="card"><h3 style="margin:0 0 8px;color:#3b2e25">Carrinho</h3><div class="cart" id="cart"></div>
+  <div class="row"><button class="btn s" onclick="S.cart={};drawCart()">Limpar</button><button class="btn o" onclick="S.st.hints++;S.hint=true;go('mem')">Dica</button></div>
+  <button class="btn" onclick="check()">Conferir compras</button></div>`);
+  drawCart();
+}
+function add(i,d){S.cart[i]=Math.max(0,(S.cart[i]||0)+d);if(!S.cart[i])delete S.cart[i];snd(800,.06);drawCart()}
+function drawCart(){const c=$('#cart');if(!c)return;const k=Object.keys(S.cart);c.innerHTML=k.length?k.map(i=>`<div class="ci"><button onclick="add(${i},-1)">−</button><span style="font-size:1.5rem">${I[i][0]}</span> x${S.cart[i]}<button onclick="add(${i},1)">+</button></div>`).join(''):'<i style="color:#94a3b8">Toque nos itens da prateleira…</i>'}
+function check(){
+  const ok=Object.keys(S.cart).length===S.list.length&&S.list.every(l=>S.cart[l.i]===l.q);
+  if(!ok){S.st.err++;S.st.rounds++;fail('A lista era:',S.list.map(l=>`${I[l.i][0]} x${l.q}`).join('  '),'mem');return}
+  if(S.mode==='mem'){win('Você acertou todas as compras!')}else{S.view='cash';makeQ();render()}
+}
+function makeQ(){
+  const tot=S.list.reduce((s,l)=>s+P(l.i)*l.q,0);let type='tot',ans=tot,q='Quanto deu a conta?',extra='';
+  const r=pre()?'tot':['tot','troco','desc'][Math.min(S.lvl-1,2)>0?rnd(Math.min(S.lvl,3)):0];
+  if(r==='troco'){const bill=[2000,5000,10000,20000].find(b=>b>=tot)||Math.ceil(tot/10000)*10000;ans=bill-tot;q=`Você pagou com ${M(bill)}. Qual é o troco?`;type='troco'}
+  if(r==='desc'){ans=Math.round(tot*.9);q='A loja deu 10% de desconto. Quanto você paga?';type='desc'}
+  const step=pre()?100:50,ds=[-3,-2,-1,1,2,3].map(x=>x*step).sort(()=>Math.random()-.5);
+  const o=[ans];for(const d of ds){if(o.length<3&&ans+d>=0&&!o.includes(ans+d))o.push(ans+d)}
+  S.q={tot,ans,q,type,opts:o.sort(()=>Math.random()-.5)};
+}
+function cash(){
+  const q=S.q;
+  shell(`<div class="card"><h2 style="text-align:center;margin:0;color:#3b2e25">${q.q}</h2>
+  <div class="card cup" style="margin-top:12px"><div style="text-align:center;font-weight:800">CUPOM FISCAL</div><table>${S.list.map(l=>`<tr><td>${I[l.i][0]} ${I[l.i][1]}</td><td>${l.q} × ${M(P(l.i))}</td></tr>`).join('')}</table></div>
+  ${q.opts.map(v=>`<button class="btn" style="font-size:1.4rem" onclick="ansQ(${v})">${M(v)}</button>`).join('')}</div>`);
+}
+function ansQ(v){
+  S.st.rounds++;
+  if(v===S.q.ans)win('Cálculo perfeito!');
+  else{S.st.err++;fail('A resposta certa era:',M(S.q.ans),'cash')}
+}
+function win(m){
+  S.st.ok++;if(S.mode==='mem')S.st.rounds++;S.lvl++;S.st.max=S.lvl;snd(660,.15);setTimeout(()=>snd(880,.2),150);
+  shell(`<div class="card" style="text-align:center"><div class="big">✓</div><h2 style="color:#6f8461">Muito bem!</h2><p style="font-weight:800">${m}</p><button class="btn g" onclick="S.who=S.goal=0;newList();go('mem')">Próxima fase</button></div>`);
+}
+function fail(t,d,back){
+  snd(200,.25);
+  shell(`<div class="card" style="text-align:center"><div class="big">↻</div><h2 style="color:#b8704b">Quase!</h2><p style="font-weight:800">${t}</p><p style="font-size:1.6rem">${d}</p><button class="btn o" onclick="go('${back==='mem'?'mem':'cash'}')">Tentar de novo</button></div>`);
+}
+function res(){}
+function report(){
+  S.view='report';const s=S.st,pct=s.rounds?Math.round(s.ok/s.rounds*100):0;
+  shell(`<div class="card"><h2 style="margin:0;color:#3b2e25">Relatório da sessão</h2><p style="color:#64748b;margin:4px 0 10px">${S.name||'Participante'} · ${new Date().toLocaleDateString('pt-BR')} · ${{pre:'Pré-escolar',fun:'Fundamental I',adu:'Adolescentes e adultos'}[S.prof]} · ${S.mode==='mem'?'Desafio de Memória':'História Problema'}</p>
+  <table><tr><td>Rodadas jogadas</td><td><b>${s.rounds}</b></td></tr><tr><td>Acertos</td><td><b>${s.ok}</b></td></tr><tr><td>Erros</td><td><b>${s.err}</b></td></tr><tr><td>Aproveitamento</td><td><b>${pct}%</b></td></tr><tr><td>Fase alcançada</td><td><b>${S.lvl}</b></td></tr><tr><td>Dicas usadas</td><td><b>${s.hints}</b></td></tr><tr><td>Tempo de memorização</td><td><b>${s.secs}s</b></td></tr></table>
+  <p style="font-size:.85rem;color:#64748b">Material de apoio. Não substitui avaliação profissional.</p>
+  <div class="np"><button class="btn" onclick="print()">Imprimir / salvar PDF</button><button class="btn s" onclick="go('home')">← Voltar ao menu</button></div></div>`,false);
+}
+home();
+</script>
+</body>
+</html>
