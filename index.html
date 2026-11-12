@@ -34,6 +34,8 @@ h1{font:italic 600 clamp(38px,6vw,64px)/1.05 'Cormorant Garamond',serif;margin:1
 .capa .em{font-size:64px;filter:drop-shadow(0 4px 6px #0002)}
 .capa .ct{font:italic 600 26px/1.1 'Cormorant Garamond',serif;color:#fff;text-shadow:0 1px 3px #0003}
 .novo{position:absolute;top:14px;left:14px;background:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:5px 10px;border-radius:999px;text-transform:uppercase}
+.selo{position:absolute;top:12px;right:12px;width:112px;height:112px;border-radius:50%;background:var(--ouro);color:#fff;border:3px dashed #fff8;outline:4px solid var(--ouro);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:800 10px/1.15 'Nunito Sans',sans-serif;letter-spacing:0;text-transform:uppercase;transform:rotate(12deg);box-shadow:0 4px 10px #0003}
+.selo span{font-size:24px;line-height:1;margin-bottom:2px}
 .corpo{padding:18px 18px 18px;display:flex;flex-direction:column;flex:1}
 .eb{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--verde)}
 .card h3{font:600 25px/1.15 'Cormorant Garamond',serif;margin:6px 0 6px}
@@ -64,6 +66,20 @@ footer{text-align:center;font-size:13px;color:var(--suave);padding:20px 16px 40p
     <span class="sep"></span><button data-f="criancas">Crianças</button><button data-f="adolescentes">Adolescentes</button>
   </div>
   <div class="grade" id="grade">
+  <article class="card" data-f="gratis interativo criancas">
+    <div class="capa" style="background:#7fb0b0;justify-content:flex-end;padding-bottom:26px"><span class="selo"><span>🎁</span>Dia do<br>Psicopedagogo</span><div class="ct">Jogo dos 7 Erros</div></div>
+    <div class="corpo">
+      <div class="eb">Interativo · a partir de 4 anos</div><h3>Jogo dos 7 Erros</h3><p>2 atividades para tocar nas diferenças. Atenção, busca visual organizada e controle inibitório, com relatório para o terapeuta.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="jogo-7-erros.html" target="_blank" data-goatcounter-click="gratis-7-erros">Jogar</a></div>
+    </div>
+  </article>
+  <article class="card" data-f="gratis pdfs criancas">
+    <div class="capa" style="background:#e3b8a0;justify-content:flex-end;padding-bottom:26px"><span class="selo"><span>🎁</span>Dia do<br>Psicopedagogo</span><div class="ct">Jogo dos 7 Erros (PDF)</div></div>
+    <div class="corpo">
+      <div class="eb">PDF · a partir de 4 anos</div><h3>Jogo dos 7 Erros (PDF)</h3><p>2 folhas para imprimir, com gabarito, benefícios e indicação para TDAH e TEA.</p>
+      <div class="pe"><span class="preco">Grátis</span><a class="btn" href="7-erros.pdf" target="_blank" data-goatcounter-click="pdf-7-erros">Abrir PDF</a></div>
+    </div>
+  </article>
   <article class="card" data-f="gratis interativo adolescentes">
     <div class="capa" style="background:#8ea98a"><span class="novo">Novo</span><div class="em">🌱</div><div class="ct">Pomodoro da Sessão</div></div>
     <div class="corpo">
@@ -156,7 +172,7 @@ footer{text-align:center;font-size:13px;color:var(--suave);padding:20px 16px 40p
     </div>
   </article>
   <article class="card" data-f="gratis pdfs criancas">
-    <div class="capa" style="background:#8a9bb0"><div class="em">🔍</div><div class="ct">Caça Visual: Encontre e Converse</div></div>
+    <div class="capa" style="background:#8a9bb0"><div class="ct">Caça Visual: Encontre e Converse</div></div>
     <div class="corpo">
       <div class="eb">PDF</div><h3>Caça Visual: Encontre e Converse</h3><p>Atenção visual e conversa a partir das imagens.</p>
       <div class="pe"><span class="preco">Grátis</span><a class="btn" href="caca-visual-encontre-e-converse.pdf" target="_blank" data-goatcounter-click="pdf-caca-visual-encontre-e-converse">Abrir PDF</a></div>
